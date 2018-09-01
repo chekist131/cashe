@@ -3,11 +3,22 @@ package com.anton;
 import com.anton.exceptions.BufferKeyAlreadyExistsException;
 import com.anton.exceptions.BufferKeyNotFoundException;
 import com.anton.exceptions.BufferOverflowException;
+import com.anton.stratages.BufferComparator;
 
 import java.util.Map;
 import java.util.Set;
 
 public abstract class AbstractBuffer implements IBuffer {
+
+    private BufferComparator comparator;
+
+    AbstractBuffer(BufferComparator comparator) {
+        this.comparator = comparator;
+    }
+
+    BufferComparator getComparator() {
+        return comparator;
+    }
 
     public abstract int getSize();
 

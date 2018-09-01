@@ -3,10 +3,11 @@ package com.anton;
 import com.anton.exceptions.BufferKeyAlreadyExistsException;
 import com.anton.exceptions.BufferKeyNotFoundException;
 import com.anton.exceptions.BufferOverflowException;
+import com.anton.stratages.BufferComparator;
 
-import javax.management.openmbean.KeyAlreadyExistsException;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 public class DoubleBuffer implements IBuffer{
@@ -17,6 +18,16 @@ public class DoubleBuffer implements IBuffer{
     public DoubleBuffer(AbstractBuffer externalBuffer, AbstractBuffer internalBuffer) {
         this.externalBuffer = externalBuffer;
         this.internalBuffer = internalBuffer;
+    }
+
+    public DoubleBuffer(
+            BiFunction<Integer, BufferComparator, AbstractBuffer> externalBufferConstructor,
+            int externalBufferSize,
+            BiFunction<Integer, BufferComparator, AbstractBuffer> internalBufferConstructor,
+            int internalBufferSize,
+            BufferComparator comparator) {
+        externalBuffer = externalBufferConstructor.apply(externalBufferSize, comparator);
+        internalBuffer = internalBufferConstructor.apply(internalBufferSize, comparator);
     }
 
     public int getExternalBufferUsed(){

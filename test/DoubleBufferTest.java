@@ -4,6 +4,8 @@ import com.anton.*;
 import com.anton.exceptions.BufferKeyAlreadyExistsException;
 import com.anton.exceptions.BufferKeyNotFoundException;
 import com.anton.exceptions.BufferOverflowException;
+import com.anton.stratages.BufferComparator;
+import com.anton.stratages.DefaultBufferComparator;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -12,6 +14,8 @@ abstract class DoubleBufferTest {
 
     final int externalBufferSize = 5;
     final int internalBufferSize = 10;
+
+    final BufferComparator comparator = new DefaultBufferComparator();
 
     static DoubleBuffer doubleBuffer;
 

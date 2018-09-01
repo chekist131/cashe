@@ -10,7 +10,10 @@ public class DoubleBufferBufferTest extends DoubleBufferTest {
 
     @Test
     public void save() throws BufferOverflowException, BufferKeyAlreadyExistsException {
-        doubleBuffer = new DoubleBuffer(new Buffer(externalBufferSize), new Buffer(internalBufferSize));
+        doubleBuffer = new DoubleBuffer(
+                Buffer::new, externalBufferSize,
+                Buffer::new, internalBufferSize,
+                comparator);
         save(doubleBuffer);
     }
 

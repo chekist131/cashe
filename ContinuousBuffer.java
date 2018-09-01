@@ -3,6 +3,7 @@ package com.anton;
 import com.anton.exceptions.BufferKeyAlreadyExistsException;
 import com.anton.exceptions.BufferKeyNotFoundException;
 import com.anton.exceptions.BufferOverflowException;
+import com.anton.stratages.BufferComparator;
 
 import java.util.*;
 
@@ -12,7 +13,8 @@ public class ContinuousBuffer extends AbstractBuffer {
     private Map<Integer, Place> keysToStartAndLength;
     private int lastIndex;
 
-    public ContinuousBuffer(int bufferSize) {
+    public ContinuousBuffer(int bufferSize, BufferComparator comparator) {
+        super(comparator);
         data = new char[bufferSize];
         keysToStartAndLength = new TreeMap<>();
         lastIndex = 0;
@@ -33,7 +35,7 @@ public class ContinuousBuffer extends AbstractBuffer {
 
     @Override
     protected Set<Map.Entry<Integer, String>> getExtraValues(int minBytes) {
-        SortedSet<Map.Entry<Integer, String>> allData = new TreeSet<>(Comparator.comparing(Map.Entry::getValue));
+        SortedSet<Map.Entry<Integer, String>> allData = new TreeSet<>(getComparator());
         for(Map.Entry<Integer, Place> keyToStartAndLength: keysToStartAndLength.entrySet()){
             allData.add(new AbstractMap.SimpleImmutableEntry<>(keyToStartAndLength.getKey(),
                     new String(data, keyToStartAndLength.getValue().getStart(), keyToStartAndLength.getValue().getLength())));
@@ -52,8 +54,7 @@ public class ContinuousBuffer extends AbstractBuffer {
 
     @Override
     protected Set<Map.Entry<Integer, String>> getValuableValues(int freeBytes) {
-        SortedSet<Map.Entry<Integer, String>> allData = new TreeSet<>(
-                Comparator.comparing(entry -> ((Map.Entry<Integer, String>)entry).getValue()).reversed());
+        SortedSet<Map.Entry<Integer, String>> allData = new TreeSet<>(getComparator().reversed());
         for(Map.Entry<Integer, Place> keyToStartAndLength: keysToStartAndLength.entrySet()){
             allData.add(new AbstractMap.SimpleImmutableEntry<>(keyToStartAndLength.getKey(),
                     new String(data, keyToStartAndLength.getValue().getStart(), keyToStartAndLength.getValue().getLength())));
@@ -76,7 +77,7 @@ public class ContinuousBuffer extends AbstractBuffer {
         if (data.length - lastIndex < o.length())
             throw new BufferOverflowException(data.length - lastIndex, o.length());
         for (int i = lastIndex; i < lastIndex + o.length(); i++) {
-            data[i] = o.charAt(i-lastIndex);
+            data[i] = o.charAt(i - lastIndex);
         }
         keysToStartAndLength.put(key, new Place(lastIndex, o.length()));
         lastIndex += o.length();
