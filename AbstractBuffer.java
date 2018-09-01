@@ -47,11 +47,10 @@ public abstract class AbstractBuffer implements IBuffer {
     protected abstract boolean isContainsKey(int key);
 
     /**
-     * Find less valuable elements to free minBytes or more count of bytes
-     * @param minBytes minimum count of bytes must stay free
+     * Return less valuable elements from (buffer + new element)
      * @return extra values
      */
-    protected abstract Set<Map.Entry<Integer, String>> getExtraValues(int minBytes);
+    protected abstract Set<Map.Entry<Integer, String>> getExtraValues(int key, String value);
 
     /**
      * Find most valuable elements to free freeBytes or less count of bytes

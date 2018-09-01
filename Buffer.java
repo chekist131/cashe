@@ -35,12 +35,13 @@ public class Buffer extends AbstractBuffer {
     }
 
     @Override
-    protected Set<Map.Entry<Integer, String>> getExtraValues(int minBytes){
+    protected Set<Map.Entry<Integer, String>> getExtraValues(int key, String value){
+        data.put(key, value);
         Set<Map.Entry<Integer, String>> extra = new TreeSet<>(Comparator.comparing(Map.Entry::getKey));
-        final int necessaryBytes = minBytes - getFree();
+        final int necessaryBytes = value.length() - getFree();
         int byteCounter = 0;
         List<Map.Entry<Integer, String>> sortedExtra = data.entrySet().stream()
-                .sorted(getComparator())
+                .sorted(getComparator().reversed())
                 .collect(Collectors.toList());
         for(Map.Entry<Integer, String> e: sortedExtra){
             extra.add(e);
@@ -48,6 +49,7 @@ public class Buffer extends AbstractBuffer {
             if (byteCounter >= necessaryBytes)
                 break;
         }
+        data.remove(key);
         return extra;
     }
 
@@ -56,7 +58,7 @@ public class Buffer extends AbstractBuffer {
         Set<Map.Entry<Integer, String>> extra = new TreeSet<>(Comparator.comparing(Map.Entry::getKey));
         int byteCounter = 0;
         List<Map.Entry<Integer, String>> sortedExtra = data.entrySet().stream()
-                .sorted(getComparator().reversed())
+                .sorted(getComparator())
                 .collect(Collectors.toList());
         for(Map.Entry<Integer, String> e: sortedExtra){
             byteCounter += e.getValue().length();

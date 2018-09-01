@@ -34,14 +34,15 @@ public class ContinuousBuffer extends AbstractBuffer {
     }
 
     @Override
-    protected Set<Map.Entry<Integer, String>> getExtraValues(int minBytes) {
-        SortedSet<Map.Entry<Integer, String>> allData = new TreeSet<>(getComparator());
+    protected Set<Map.Entry<Integer, String>> getExtraValues(int key, String value) {
+        SortedSet<Map.Entry<Integer, String>> allData = new TreeSet<>(getComparator().reversed());
         for(Map.Entry<Integer, Place> keyToStartAndLength: keysToStartAndLength.entrySet()){
             allData.add(new AbstractMap.SimpleImmutableEntry<>(keyToStartAndLength.getKey(),
                     new String(data, keyToStartAndLength.getValue().getStart(), keyToStartAndLength.getValue().getLength())));
         }
+        allData.add(new AbstractMap.SimpleImmutableEntry<>(key, value));
         Set<Map.Entry<Integer, String>> extra = new TreeSet<>(Comparator.comparing(Map.Entry::getKey));
-        final int necessaryBytes = minBytes - getFree();
+        final int necessaryBytes = value.length() - getFree();
         int byteCounter = 0;
         for(Map.Entry<Integer, String> e: allData){
             extra.add(e);
@@ -54,7 +55,7 @@ public class ContinuousBuffer extends AbstractBuffer {
 
     @Override
     protected Set<Map.Entry<Integer, String>> getValuableValues(int freeBytes) {
-        SortedSet<Map.Entry<Integer, String>> allData = new TreeSet<>(getComparator().reversed());
+        SortedSet<Map.Entry<Integer, String>> allData = new TreeSet<>(getComparator());
         for(Map.Entry<Integer, Place> keyToStartAndLength: keysToStartAndLength.entrySet()){
             allData.add(new AbstractMap.SimpleImmutableEntry<>(keyToStartAndLength.getKey(),
                     new String(data, keyToStartAndLength.getValue().getStart(), keyToStartAndLength.getValue().getLength())));

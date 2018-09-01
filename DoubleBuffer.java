@@ -15,11 +15,6 @@ public class DoubleBuffer implements IBuffer{
     private AbstractBuffer externalBuffer;
     private AbstractBuffer internalBuffer;
 
-    public DoubleBuffer(AbstractBuffer externalBuffer, AbstractBuffer internalBuffer) {
-        this.externalBuffer = externalBuffer;
-        this.internalBuffer = internalBuffer;
-    }
-
     public DoubleBuffer(
             BiFunction<Integer, BufferComparator, AbstractBuffer> externalBufferConstructor,
             int externalBufferSize,
@@ -43,13 +38,13 @@ public class DoubleBuffer implements IBuffer{
         try{
             externalBuffer.save(key, o);
         } catch (BufferOverflowException e){
-            Set<Map.Entry<Integer, String>> extraValues = externalBuffer.getExtraValues(o.length());
+            Set<Map.Entry<Integer, String>> extraValues = externalBuffer.getExtraValues(key, o);
             try{
-                try{
-                    internalBuffer.saveSeveral(extraValues);
-                } catch (BufferKeyAlreadyExistsException ignored){
+                internalBuffer.saveSeveral(extraValues);
+            } catch (BufferKeyAlreadyExistsException ignored){
 
-                }
+            }
+            if (extraValues.stream().allMatch(entry -> entry.getKey() != key)){
                 try{
                     externalBuffer.ejectSeveral(extraValues.stream().map(Map.Entry::getKey).collect(Collectors.toSet()));
                 } catch (BufferKeyNotFoundException ignored) {
@@ -60,10 +55,7 @@ public class DoubleBuffer implements IBuffer{
                 } catch (BufferKeyAlreadyExistsException ignored){
 
                 }
-            } catch (BufferOverflowException e1){
-                internalBuffer.save(key, o);
             }
-
         }
 
     }
