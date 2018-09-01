@@ -16,6 +16,7 @@ public class Buffer extends AbstractBuffer {
 
     public Buffer(int bufferSize){
         this.size = bufferSize;
+        this.used = 0;
     }
 
     public int getSize(){

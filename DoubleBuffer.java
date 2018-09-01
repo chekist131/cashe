@@ -36,7 +36,7 @@ public class DoubleBuffer implements IBuffer{
             try{
                 try{
                     internalBuffer.saveSeveral(extraValues);
-                } catch (KeyAlreadyExistsException ignored){
+                } catch (BufferKeyAlreadyExistsException ignored){
 
                 }
                 try{
@@ -61,8 +61,7 @@ public class DoubleBuffer implements IBuffer{
     public String restore(int key) throws BufferKeyNotFoundException {
         try{
             String value = externalBuffer.restore(key);
-            int freeBytes = externalBuffer.getSize() - externalBuffer.getUsed();
-            Set<Map.Entry<Integer, String>> valuableValues = internalBuffer.getValuableValues(freeBytes);
+            Set<Map.Entry<Integer, String>> valuableValues = internalBuffer.getValuableValues(externalBuffer.getFree());
             try{
                 externalBuffer.saveSeveral(valuableValues);
             } catch (BufferKeyAlreadyExistsException | BufferOverflowException ignored){
