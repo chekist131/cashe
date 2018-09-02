@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import java.util.Comparator;
 
-public class DoubleBufferEmulatorContinuousTest extends DoubleBufferTest {
+public class ContinuousDoubleBufferTest extends DoubleBufferTest {
 
     @Test
     public void save() throws BufferOverflowException, BufferKeyAlreadyExistsException {
