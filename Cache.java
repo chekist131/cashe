@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Function;
 
-public class Cache implements IBuffer {
+public class Cache implements Bufferable {
 
     private DoubleBuffer buffer;
     private Map<Integer, Date> savingTime;
@@ -19,8 +19,8 @@ public class Cache implements IBuffer {
                  Function<Map<Integer, Date>, CacheStrategy> cacheStrategyConstructor) {
         savingTime = new TreeMap<>();
         this.buffer = new DoubleBuffer(
-                Buffer::new, externalBufferSize,
-                Buffer::new, internalBufferSize,
+                BufferEmulator::new, externalBufferSize,
+                BufferEmulator::new, internalBufferSize,
                 cacheStrategyConstructor.apply(savingTime));
     }
 

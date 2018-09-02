@@ -8,7 +8,7 @@ import com.anton.strateges.BufferComparator;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class AbstractBuffer implements IBuffer {
+public abstract class AbstractBuffer implements Bufferable {
 
     private BufferComparator comparator;
 

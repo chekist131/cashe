@@ -6,15 +6,13 @@ import com.anton.exceptions.BufferKeyNotFoundException;
 import com.anton.exceptions.BufferOverflowException;
 import org.junit.Test;
 
-import java.util.Comparator;
-
-public class DoubleBufferContinuousTest extends DoubleBufferTest {
+public class DoubleBufferBufferEmulatorTest extends DoubleBufferTest {
 
     @Test
     public void save() throws BufferOverflowException, BufferKeyAlreadyExistsException {
         doubleBuffer = new DoubleBuffer(
-                ContinuousBuffer::new, externalBufferSize,
-                ContinuousBuffer::new, internalBufferSize,
+                BufferEmulator::new, externalBufferSize,
+                BufferEmulator::new, internalBufferSize,
                 comparator);
         save(doubleBuffer);
     }

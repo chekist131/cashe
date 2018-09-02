@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
-public class DoubleBuffer implements IBuffer{
+public class DoubleBuffer implements Bufferable {
 
     private AbstractBuffer externalBuffer;
     private AbstractBuffer internalBuffer;

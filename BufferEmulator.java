@@ -8,14 +8,14 @@ import com.anton.strateges.BufferComparator;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Buffer extends AbstractBuffer {
+public class BufferEmulator extends AbstractBuffer {
 
     private Map<Integer, String> data = new HashMap<>();
 
     private int size;
     private int used;
 
-    public Buffer(int bufferSize, BufferComparator comparator){
+    public BufferEmulator(int bufferSize, BufferComparator comparator){
         super(comparator);
         this.size = bufferSize;
         this.used = 0;
