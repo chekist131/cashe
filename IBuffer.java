@@ -9,4 +9,6 @@ public interface IBuffer {
     void save(int key, String o) throws BufferOverflowException, BufferKeyAlreadyExistsException;
 
     String restore(int key) throws BufferKeyNotFoundException;
+
+    boolean isContainsKey(int key);
 }

@@ -1,4 +1,4 @@
-package com.anton.stratages;
+package com.anton.strateges;
 
 import java.util.Comparator;
 import java.util.Map;

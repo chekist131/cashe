@@ -3,7 +3,7 @@ package com.anton;
 import com.anton.exceptions.BufferKeyAlreadyExistsException;
 import com.anton.exceptions.BufferKeyNotFoundException;
 import com.anton.exceptions.BufferOverflowException;
-import com.anton.stratages.BufferComparator;
+import com.anton.strateges.BufferComparator;
 
 import java.util.Map;
 import java.util.Set;
@@ -31,6 +31,11 @@ public class DoubleBuffer implements IBuffer{
 
     public int getInternalBufferUsed(){
         return internalBuffer.getUsed();
+    }
+
+    @Override
+    public boolean isContainsKey(int key) {
+        return externalBuffer.isContainsKey(key) || internalBuffer.isContainsKey(key);
     }
 
     @Override
