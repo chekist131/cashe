@@ -5,24 +5,23 @@ import com.anton.exceptions.BufferKeyNotFoundException;
 import com.anton.exceptions.BufferOverflowException;
 import com.anton.strateges.BufferComparator;
 
-import javax.annotation.PreDestroy;
 import java.io.*;
 import java.util.*;
 
 public class FileBuffer extends AbstractBuffer {
 
-    private String filename;
+    private String fileName;
     private Map<Integer, Place> keysToStartAndLength;
     private int size;
     private int lastIndex;
 
-    public FileBuffer(int bufferSize, BufferComparator comparator) {
+    public FileBuffer(int bufferSize, BufferComparator comparator, String fileName) {
         super(comparator);
         this.size = bufferSize;
         this.keysToStartAndLength = new TreeMap<>();
         this.lastIndex = 0;
-        filename = "test";
-        File f = new File(filename);
+        this.fileName = fileName;
+        File f = new File(this.fileName);
         try {
             f.createNewFile();
         } catch (IOException e) {
@@ -46,7 +45,7 @@ public class FileBuffer extends AbstractBuffer {
     @Override
     protected Set<Map.Entry<Integer, String>> getExtraValues(int key, String value) {
         char[] data = new char[size];
-        try(Reader reader = new FileReader(filename)){
+        try(Reader reader = new FileReader(fileName)){
             reader.read(data);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -74,7 +73,7 @@ public class FileBuffer extends AbstractBuffer {
     @Override
     protected Set<Map.Entry<Integer, String>> getValuableValues(int freeBytes) {
         char[] data = new char[size];
-        try(Reader reader = new FileReader(filename)){
+        try(Reader reader = new FileReader(fileName)){
             reader.read(data);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -104,7 +103,7 @@ public class FileBuffer extends AbstractBuffer {
         if (getFree() < o.length())
             throw new BufferOverflowException(getFree(), o.length());
         char[] data = new char[size];
-        try(Reader reader = new FileReader(filename)){
+        try(Reader reader = new FileReader(fileName)){
             reader.read(data);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -114,7 +113,7 @@ public class FileBuffer extends AbstractBuffer {
         for (int i = lastIndex; i < lastIndex + o.length(); i++) {
             data[i] = o.charAt(i - lastIndex);
         }
-        try(Writer writer = new FileWriter(filename)){
+        try(Writer writer = new FileWriter(fileName)){
             writer.write(data);
         } catch (IOException e) {
             e.printStackTrace();
@@ -130,7 +129,7 @@ public class FileBuffer extends AbstractBuffer {
         Place startAndLengthValue = keysToStartAndLength.get(key);
         String result;
         char[] data = new char[size];
-        try(Reader reader = new FileReader(filename)){
+        try(Reader reader = new FileReader(fileName)){
             reader.read(data);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -144,7 +143,7 @@ public class FileBuffer extends AbstractBuffer {
             data[i - startAndLengthValue.getLength()] = data[i];
         for (int i = lastIndex - startAndLengthValue.getLength(); i < lastIndex; i++)
             data[i] = (char) -1;
-        try(Writer writer = new FileWriter(filename)){
+        try(Writer writer = new FileWriter(fileName)){
             writer.write(data);
         } catch (IOException e) {
             e.printStackTrace();

@@ -13,8 +13,8 @@ public class ContinuousDoubleBufferTest extends DoubleBufferTest {
     @Test
     public void save() throws BufferOverflowException, BufferKeyAlreadyExistsException {
         doubleBuffer = new DoubleBuffer(
-                ContinuousBuffer::new, externalBufferSize,
-                ContinuousBuffer::new, internalBufferSize,
+                BufferFactory.getContinuousBuffer(externalBufferSize, comparator),
+                BufferFactory.getContinuousBuffer(internalBufferSize, comparator),
                 comparator);
         save(doubleBuffer);
     }

@@ -19,8 +19,8 @@ public class Cache implements Bufferable {
                  Function<Map<Integer, Date>, CacheStrategy> cacheStrategyConstructor) {
         savingTime = new TreeMap<>();
         this.buffer = new DoubleBuffer(
-                BufferEmulator::new, externalBufferSize,
-                BufferEmulator::new, internalBufferSize,
+                BufferFactory.getBufferEmulator(externalBufferSize, cacheStrategyConstructor.apply(savingTime)),
+                BufferFactory.getBufferEmulator(internalBufferSize, cacheStrategyConstructor.apply(savingTime)),
                 cacheStrategyConstructor.apply(savingTime));
     }
 

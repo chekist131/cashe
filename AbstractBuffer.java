@@ -20,6 +20,10 @@ public abstract class AbstractBuffer implements Bufferable {
         return comparator;
     }
 
+    public void setComparator(BufferComparator comparator) {
+        this.comparator = comparator;
+    }
+
     public abstract int getSize();
 
     public abstract int getUsed();

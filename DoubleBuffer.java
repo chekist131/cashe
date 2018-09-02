@@ -7,7 +7,6 @@ import com.anton.strateges.BufferComparator;
 
 import java.util.Map;
 import java.util.Set;
-import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 public class DoubleBuffer implements Bufferable {
@@ -16,13 +15,13 @@ public class DoubleBuffer implements Bufferable {
     private AbstractBuffer internalBuffer;
 
     public DoubleBuffer(
-            BiFunction<Integer, BufferComparator, AbstractBuffer> externalBufferConstructor,
-            int externalBufferSize,
-            BiFunction<Integer, BufferComparator, AbstractBuffer> internalBufferConstructor,
-            int internalBufferSize,
+            AbstractBuffer externalBuffer,
+            AbstractBuffer internalBuffer,
             BufferComparator comparator) {
-        externalBuffer = externalBufferConstructor.apply(externalBufferSize, comparator);
-        internalBuffer = internalBufferConstructor.apply(internalBufferSize, comparator);
+        this.externalBuffer = externalBuffer;
+        this.externalBuffer.setComparator(comparator);
+        this.internalBuffer = internalBuffer;
+        this.externalBuffer.setComparator(comparator);
     }
 
     public int getExternalBufferUsed(){

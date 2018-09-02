@@ -11,8 +11,8 @@ public class BufferEmulatorDoubleBufferTest extends DoubleBufferTest {
     @Test
     public void save() throws BufferOverflowException, BufferKeyAlreadyExistsException {
         doubleBuffer = new DoubleBuffer(
-                BufferEmulator::new, externalBufferSize,
-                BufferEmulator::new, internalBufferSize,
+                BufferFactory.getBufferEmulator(externalBufferSize, comparator),
+                BufferFactory.getBufferEmulator(internalBufferSize, comparator),
                 comparator);
         save(doubleBuffer);
     }
