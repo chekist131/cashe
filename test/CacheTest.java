@@ -15,8 +15,16 @@ public class CacheTest {
     public void test() throws BufferKeyAlreadyExistsException, BufferOverflowException, BufferKeyNotFoundException {
         Cache cache = new Cache(5, 10, LeastRecentlyUsed::new);
         cache.save(5, "Anton");
+        assertEquals(5, cache.getExternalBufferUsed());
+        assertEquals(0, cache.getInternalBufferUsed());
+
         cache.save(12, "Ivan");
+        assertEquals(4, cache.getExternalBufferUsed());
+        assertEquals(5, cache.getInternalBufferUsed());
+
         cache.restore(12);
+        assertEquals(5, cache.getExternalBufferUsed());
+        assertEquals(0, cache.getInternalBufferUsed());
     }
 
 }

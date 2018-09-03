@@ -24,6 +24,14 @@ public class Cache implements Bufferable {
                 cacheStrategyConstructor.apply(savingTime));
     }
 
+    public int getExternalBufferUsed(){
+        return buffer.getExternalBufferUsed();
+    }
+
+    public int getInternalBufferUsed(){
+        return buffer.getInternalBufferUsed();
+    }
+
     public void save(int key, String value) throws BufferKeyAlreadyExistsException, BufferOverflowException {
         savingTime.put(key, new Date());
         try{
