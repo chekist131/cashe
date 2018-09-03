@@ -9,7 +9,7 @@ import com.anton.strateges.BufferComparator;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class AbstractBuffer implements Bufferable {
+public abstract class AbstractBuffer implements Bufferable, AutoCloseable {
 
     private BufferComparator comparator;
 
@@ -61,4 +61,7 @@ public abstract class AbstractBuffer implements Bufferable {
      * @return valuable values
      */
     protected abstract Set<Map.Entry<Integer, String>> getValuableValues(final int freeBytes) throws BufferIOException;
+
+    @Override
+    public abstract void close();
 }

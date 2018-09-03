@@ -1,5 +1,6 @@
 package com.anton;
 
+import com.anton.exceptions.BufferIOException;
 import com.anton.strateges.BufferComparator;
 
 public class ArrayBuffer extends AbstractContinuousBuffer {
@@ -24,5 +25,10 @@ public class ArrayBuffer extends AbstractContinuousBuffer {
     @Override
     protected void stash(char[] data) {
         this.data = data;
+    }
+
+    @Override
+    public void close(){
+
     }
 }

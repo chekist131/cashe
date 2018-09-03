@@ -46,4 +46,10 @@ public class FileBuffer extends AbstractContinuousBuffer {
             throw new BufferIOException(e);
         }
     }
+
+    @Override
+    public void close(){
+        File f = new File(fileName);
+        f.delete();
+    }
 }

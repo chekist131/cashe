@@ -13,14 +13,25 @@ import static org.junit.Assert.assertNotEquals;
 
 abstract class DoubleBufferTest {
 
-    final int externalBufferSize = 5;
-    final int internalBufferSize = 10;
+    static int externalBufferSize = 5;
+    static int internalBufferSize = 10;
+    static BufferComparator comparator = new DefaultBufferComparator();
 
-    final BufferComparator comparator = new DefaultBufferComparator();
+    public abstract void saveAndRestore()
+            throws BufferOverflowException, BufferKeyAlreadyExistsException,
+            BufferIOException, BufferKeyNotFoundException;
 
-    static DoubleBuffer doubleBuffer;
+    void saveAndRestore(
+            AbstractBuffer externalBuffer,
+            AbstractBuffer internalBuffer,
+            BufferComparator comparator)
+            throws
+            BufferOverflowException,
+            BufferKeyAlreadyExistsException,
+            BufferIOException,
+            BufferKeyNotFoundException {
+        DoubleBuffer doubleBuffer = new DoubleBuffer(externalBuffer, internalBuffer, comparator);
 
-    void save(DoubleBuffer doubleBuffer) throws BufferOverflowException, BufferKeyAlreadyExistsException, BufferIOException {
         doubleBuffer.save(1, "Igor");
         assertEquals(4, doubleBuffer.getExternalBufferUsed());
         assertEquals(0, doubleBuffer.getInternalBufferUsed());
@@ -50,9 +61,6 @@ abstract class DoubleBufferTest {
         assertEquals(5, doubleBuffer.getExternalBufferUsed());
         assertEquals(10, doubleBuffer.getInternalBufferUsed());
 
-    }
-
-    void restore(DoubleBuffer doubleBuffer) throws BufferKeyNotFoundException, BufferIOException {
         try{
             doubleBuffer.restore(0);
             assertNotEquals(1,1);
@@ -77,6 +85,5 @@ abstract class DoubleBufferTest {
         assertEquals("Anton", doubleBuffer.restore(2));
         assertEquals(5, doubleBuffer.getExternalBufferUsed());
         assertEquals(1, doubleBuffer.getInternalBufferUsed());
-
     }
 }

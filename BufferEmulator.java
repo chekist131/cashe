@@ -1,5 +1,6 @@
 package com.anton;
 
+import com.anton.exceptions.BufferIOException;
 import com.anton.exceptions.BufferKeyAlreadyExistsException;
 import com.anton.exceptions.BufferKeyNotFoundException;
 import com.anton.exceptions.BufferOverflowException;
@@ -10,13 +11,14 @@ import java.util.stream.Collectors;
 
 public class BufferEmulator extends AbstractBuffer {
 
-    private Map<Integer, String> data = new HashMap<>();
+    private Map<Integer, String> data;
 
     private int size;
     private int used;
 
-    public BufferEmulator(int bufferSize, BufferComparator comparator){
+    BufferEmulator(int bufferSize, BufferComparator comparator){
         super(comparator);
+        data = new HashMap<>();
         this.size = bufferSize;
         this.used = 0;
     }
@@ -89,4 +91,8 @@ public class BufferEmulator extends AbstractBuffer {
         return result;
     }
 
+    @Override
+    public void close(){
+
+    }
 }
