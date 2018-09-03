@@ -9,7 +9,7 @@ public class BufferFactory {
         return new BufferEmulator(bufferSize, comparator);
     }
 
-    public static ArrayBuffer getContinuousBuffer(int bufferSize, BufferComparator comparator){
+    public static ArrayBuffer getArrayBuffer(int bufferSize, BufferComparator comparator){
         return new ArrayBuffer(bufferSize, comparator);
     }
 

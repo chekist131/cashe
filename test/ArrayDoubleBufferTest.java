@@ -12,9 +12,11 @@ public class ArrayDoubleBufferTest extends DoubleBufferTest {
     public void saveAndRestore()
             throws BufferKeyAlreadyExistsException, BufferIOException,
             BufferKeyNotFoundException, BufferOverflowException {
-        super.saveAndRestore(
-                BufferFactory.getContinuousBuffer(externalBufferSize, comparator),
-                BufferFactory.getContinuousBuffer(internalBufferSize, comparator),
-                comparator);
+        try(
+                AbstractBuffer extBuf = BufferFactory.getArrayBuffer(externalBufferSize, null);
+                AbstractBuffer intBuf = BufferFactory.getArrayBuffer(internalBufferSize, null)
+        ){
+            super.saveAndRestore(extBuf, intBuf);
+        }
     }
 }

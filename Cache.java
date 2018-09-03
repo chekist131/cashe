@@ -23,13 +23,13 @@ public class Cache implements Bufferable, AutoCloseable {
                  Function<Map<Integer, Date>, CacheStrategy> cacheStrategyConstructor) {
         savingTime = new TreeMap<>();
         this.externalBufferForDoubleBuffer =
-                BufferFactory.getBufferEmulator(externalBufferSize, cacheStrategyConstructor.apply(savingTime));
+                BufferFactory.getBufferEmulator(externalBufferSize, null);
         this.internalBufferForDoubleBuffer =
-                BufferFactory.getBufferEmulator(internalBufferSize, cacheStrategyConstructor.apply(savingTime));
+                BufferFactory.getBufferEmulator(internalBufferSize, null);
         this.doubleBuffer = new DoubleBuffer(
-                externalBufferForDoubleBuffer,
-                internalBufferForDoubleBuffer,
-                cacheStrategyConstructor.apply(savingTime));
+                this.externalBufferForDoubleBuffer,
+                this.internalBufferForDoubleBuffer,
+                cacheStrategyConstructor.apply(this.savingTime));
     }
 
     public int getExternalBufferUsed(){

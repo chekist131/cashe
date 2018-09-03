@@ -15,7 +15,7 @@ abstract class DoubleBufferTest {
 
     static int externalBufferSize = 5;
     static int internalBufferSize = 10;
-    static BufferComparator comparator = new DefaultBufferComparator();
+    private static BufferComparator comparator = new DefaultBufferComparator();
 
     public abstract void saveAndRestore()
             throws BufferOverflowException, BufferKeyAlreadyExistsException,
@@ -23,8 +23,7 @@ abstract class DoubleBufferTest {
 
     void saveAndRestore(
             AbstractBuffer externalBuffer,
-            AbstractBuffer internalBuffer,
-            BufferComparator comparator)
+            AbstractBuffer internalBuffer)
             throws
             BufferOverflowException,
             BufferKeyAlreadyExistsException,

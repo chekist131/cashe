@@ -22,7 +22,7 @@ public class DoubleBuffer implements Bufferable {
         this.externalBuffer = externalBuffer;
         this.externalBuffer.setComparator(comparator);
         this.internalBuffer = internalBuffer;
-        this.externalBuffer.setComparator(comparator);
+        this.internalBuffer.setComparator(comparator);
     }
 
     public int getExternalBufferUsed(){

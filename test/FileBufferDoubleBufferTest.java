@@ -14,10 +14,10 @@ public class FileBufferDoubleBufferTest extends DoubleBufferTest {
             throws BufferOverflowException, BufferKeyAlreadyExistsException,
             BufferIOException, BufferKeyNotFoundException {
         try(
-                AbstractBuffer extBuf = BufferFactory.getFileBuffer(externalBufferSize, comparator, "test1");
-                AbstractBuffer intBuf = BufferFactory.getFileBuffer(internalBufferSize, comparator, "test2")
+                AbstractBuffer extBuf = BufferFactory.getFileBuffer(externalBufferSize, null, "test1");
+                AbstractBuffer intBuf = BufferFactory.getFileBuffer(internalBufferSize, null, "test2")
         ){
-            super.saveAndRestore(extBuf, intBuf, comparator);
+            super.saveAndRestore(extBuf, intBuf);
         }
     }
 }
