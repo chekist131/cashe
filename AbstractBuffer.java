@@ -1,5 +1,6 @@
 package com.anton;
 
+import com.anton.exceptions.BufferIOException;
 import com.anton.exceptions.BufferKeyAlreadyExistsException;
 import com.anton.exceptions.BufferKeyNotFoundException;
 import com.anton.exceptions.BufferOverflowException;
@@ -33,7 +34,7 @@ public abstract class AbstractBuffer implements Bufferable {
     }
 
     void saveSeveral(Set<Map.Entry<Integer, String>> values)
-            throws BufferOverflowException, BufferKeyAlreadyExistsException {
+            throws BufferOverflowException, BufferKeyAlreadyExistsException, BufferIOException {
         int bytes = values.stream().map(entry -> entry.getValue().length()).reduce(0, (a, b) -> a + b);
         if (getFree() < bytes)
             throw new BufferOverflowException(getFree(), bytes);
@@ -43,7 +44,7 @@ public abstract class AbstractBuffer implements Bufferable {
             save(entry.getKey(), entry.getValue());
     }
 
-    void ejectSeveral(Set<Integer> keys) throws BufferKeyNotFoundException {
+    void ejectSeveral(Set<Integer> keys) throws BufferKeyNotFoundException, BufferIOException {
         for(int key: keys)
             restore(key);
     }
@@ -52,12 +53,12 @@ public abstract class AbstractBuffer implements Bufferable {
      * Return less valuable elements from (buffer + new element)
      * @return extra values
      */
-    protected abstract Set<Map.Entry<Integer, String>> getExtraValues(int key, String value);
+    protected abstract Set<Map.Entry<Integer, String>> getExtraValues(int key, String value) throws BufferIOException;
 
     /**
      * Find most valuable elements to free freeBytes or less count of bytes
      * @param freeBytes maximum count of bytes of valuable values
      * @return valuable values
      */
-    protected abstract Set<Map.Entry<Integer, String>> getValuableValues(final int freeBytes);
+    protected abstract Set<Map.Entry<Integer, String>> getValuableValues(final int freeBytes) throws BufferIOException;
 }

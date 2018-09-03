@@ -1,5 +1,6 @@
 package com.anton;
 
+import com.anton.exceptions.BufferIOException;
 import com.anton.exceptions.BufferKeyAlreadyExistsException;
 import com.anton.exceptions.BufferKeyNotFoundException;
 import com.anton.exceptions.BufferOverflowException;
@@ -32,7 +33,7 @@ public class Cache implements Bufferable {
         return buffer.getInternalBufferUsed();
     }
 
-    public void save(int key, String value) throws BufferKeyAlreadyExistsException, BufferOverflowException {
+    public void save(int key, String value) throws BufferKeyAlreadyExistsException, BufferOverflowException, BufferIOException {
         savingTime.put(key, new Date());
         try{
             buffer.save(key, value);
@@ -42,7 +43,7 @@ public class Cache implements Bufferable {
         }
     }
 
-    public String restore(int key) throws BufferKeyNotFoundException {
+    public String restore(int key) throws BufferKeyNotFoundException, BufferIOException {
         Date time = savingTime.get(key);
         savingTime.remove(key);
         try{

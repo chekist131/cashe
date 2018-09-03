@@ -1,6 +1,7 @@
 package com.anton.test;
 
 import com.anton.*;
+import com.anton.exceptions.BufferIOException;
 import com.anton.exceptions.BufferKeyAlreadyExistsException;
 import com.anton.exceptions.BufferKeyNotFoundException;
 import com.anton.exceptions.BufferOverflowException;
@@ -19,7 +20,7 @@ abstract class DoubleBufferTest {
 
     static DoubleBuffer doubleBuffer;
 
-    void save(DoubleBuffer doubleBuffer) throws BufferOverflowException, BufferKeyAlreadyExistsException {
+    void save(DoubleBuffer doubleBuffer) throws BufferOverflowException, BufferKeyAlreadyExistsException, BufferIOException {
         doubleBuffer.save(1, "Igor");
         assertEquals(4, doubleBuffer.getExternalBufferUsed());
         assertEquals(0, doubleBuffer.getInternalBufferUsed());
@@ -51,7 +52,7 @@ abstract class DoubleBufferTest {
 
     }
 
-    void restore(DoubleBuffer doubleBuffer) throws BufferKeyNotFoundException {
+    void restore(DoubleBuffer doubleBuffer) throws BufferKeyNotFoundException, BufferIOException {
         try{
             doubleBuffer.restore(0);
             assertNotEquals(1,1);

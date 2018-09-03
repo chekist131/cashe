@@ -1,5 +1,6 @@
 package com.anton;
 
+import com.anton.exceptions.BufferIOException;
 import com.anton.exceptions.BufferKeyAlreadyExistsException;
 import com.anton.exceptions.BufferKeyNotFoundException;
 import com.anton.exceptions.BufferOverflowException;
@@ -38,7 +39,7 @@ public class DoubleBuffer implements Bufferable {
     }
 
     @Override
-    public void save(int key, String o) throws BufferOverflowException, BufferKeyAlreadyExistsException {
+    public void save(int key, String o) throws BufferOverflowException, BufferKeyAlreadyExistsException, BufferIOException {
         try{
             externalBuffer.save(key, o);
         } catch (BufferOverflowException e){
@@ -65,7 +66,7 @@ public class DoubleBuffer implements Bufferable {
     }
 
     @Override
-    public String restore(int key) throws BufferKeyNotFoundException {
+    public String restore(int key) throws BufferKeyNotFoundException, BufferIOException {
         try{
             String value = externalBuffer.restore(key);
             Set<Map.Entry<Integer, String>> valuableValues = internalBuffer.getValuableValues(externalBuffer.getFree());
