@@ -29,7 +29,7 @@ public abstract class AbstractContinuousBuffer extends AbstractBuffer {
     }
 
     @Override
-    protected Set<Map.Entry<Integer, String>> getExtraValues(int key, String value, BufferComparator comparator) throws BufferIOException {
+    public Set<Map.Entry<Integer, String>> getExtraValues(int key, String value, BufferComparator comparator) throws BufferIOException {
         char[] data = fetch();
         SortedSet<Map.Entry<Integer, String>> allData = new TreeSet<>(comparator.reversed());
         for(Map.Entry<Integer, Place> keyToStartAndLength: keysToStartAndLength.entrySet()){
@@ -50,7 +50,7 @@ public abstract class AbstractContinuousBuffer extends AbstractBuffer {
     }
 
     @Override
-    protected Set<Map.Entry<Integer, String>> getValuableValues(int freeBytes, BufferComparator comparator) throws BufferIOException {
+    public Set<Map.Entry<Integer, String>> getValuableValues(int freeBytes, BufferComparator comparator) throws BufferIOException {
         char[] data = fetch();
         SortedSet<Map.Entry<Integer, String>> allData = new TreeSet<>(comparator);
         for(Map.Entry<Integer, Place> keyToStartAndLength: keysToStartAndLength.entrySet()){

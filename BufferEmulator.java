@@ -36,7 +36,7 @@ public class BufferEmulator extends AbstractBuffer {
     }
 
     @Override
-    protected Set<Map.Entry<Integer, String>> getExtraValues(int key, String value, BufferComparator comparator){
+    public Set<Map.Entry<Integer, String>> getExtraValues(int key, String value, BufferComparator comparator){
         data.put(key, value);
         Set<Map.Entry<Integer, String>> extra = new TreeSet<>(Comparator.comparing(Map.Entry::getKey));
         final int necessaryBytes = value.length() - getFree();
@@ -55,7 +55,7 @@ public class BufferEmulator extends AbstractBuffer {
     }
 
     @Override
-    protected Set<Map.Entry<Integer, String>> getValuableValues(final int freeBytes, BufferComparator comparator){
+    public Set<Map.Entry<Integer, String>> getValuableValues(final int freeBytes, BufferComparator comparator){
         Set<Map.Entry<Integer, String>> extra = new TreeSet<>(Comparator.comparing(Map.Entry::getKey));
         int byteCounter = 0;
         List<Map.Entry<Integer, String>> sortedExtra = data.entrySet().stream()
