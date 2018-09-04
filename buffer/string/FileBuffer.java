@@ -1,11 +1,10 @@
-package com.anton;
+package com.anton.buffer.string;
 
 import com.anton.exceptions.BufferIOException;
-import com.anton.strateges.BufferComparator;
 
 import java.io.*;
 
-public class FileBuffer extends AbstractContinuousBuffer {
+public class FileBuffer extends ContinuousBuffer {
 
     private String fileName;
     private int size;

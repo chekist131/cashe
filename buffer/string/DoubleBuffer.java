@@ -1,6 +1,6 @@
-package com.anton.string;
+package com.anton.buffer.string;
 
-import com.anton.object.DoubleBufferObject;
+import com.anton.buffer.object.DoubleBufferObject;
 import com.anton.strateges.BufferComparator;
 
 public class DoubleBuffer extends DoubleBufferObject<String> implements Bufferable {

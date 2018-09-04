@@ -1,13 +1,11 @@
 package com.anton;
 
+import com.anton.buffer.string.*;
 import com.anton.exceptions.BufferIOException;
 import com.anton.exceptions.BufferKeyAlreadyExistsException;
 import com.anton.exceptions.BufferKeyNotFoundException;
 import com.anton.exceptions.BufferOverflowException;
 import com.anton.strateges.CacheStrategy;
-import com.anton.string.AbstractBuffer;
-import com.anton.string.Bufferable;
-import com.anton.string.DoubleBuffer;
 
 import java.util.Date;
 import java.util.Map;

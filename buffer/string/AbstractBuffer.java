@@ -1,7 +1,6 @@
-package com.anton.string;
+package com.anton.buffer.string;
 
-import com.anton.object.AbstractBufferObject;
-import com.anton.object.BufferableObject;
+import com.anton.buffer.object.AbstractBufferObject;
 
 public interface AbstractBuffer extends AbstractBufferObject<String>, Bufferable, AutoCloseable {
 

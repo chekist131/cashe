@@ -1,34 +1,17 @@
-package com.anton;
+package com.anton.buffer.string;
 
+import com.anton.buffer.IContinuousBuffer;
+import com.anton.buffer.Place;
 import com.anton.exceptions.BufferIOException;
 import com.anton.exceptions.BufferKeyAlreadyExistsException;
 import com.anton.exceptions.BufferKeyNotFoundException;
 import com.anton.exceptions.BufferOverflowException;
 import com.anton.strateges.BufferComparator;
-import com.anton.string.AbstractBuffer;
+import com.anton.buffer.string.AbstractBuffer;
 
 import java.util.*;
 
-public abstract class AbstractContinuousBuffer implements AbstractBuffer {
-
-    private Map<Integer, Place> keysToStartAndLength;
-    private int lastIndex;
-
-    AbstractContinuousBuffer() {
-        this.lastIndex = 0;
-        this.keysToStartAndLength = new TreeMap<>();
-    }
-
-    @Override
-    public int getUsed(){
-        return lastIndex;
-    }
-
-    @Override
-    public boolean isContainsKey(int key) {
-        return keysToStartAndLength.containsKey(key);
-    }
-
+public abstract class ContinuousBuffer extends IContinuousBuffer<String> implements AbstractBuffer {
     @Override
     public Set<Map.Entry<Integer, String>> getExtraValues(int key, String value, BufferComparator<String> comparator) throws BufferIOException {
         char[] data = fetch();

@@ -1,9 +1,6 @@
-package com.anton;
+package com.anton.buffer.string;
 
-import com.anton.exceptions.BufferIOException;
-import com.anton.strateges.BufferComparator;
-
-public class ArrayBuffer extends AbstractContinuousBuffer {
+public class ArrayBuffer extends ContinuousBuffer {
 
     private char[] data;
 

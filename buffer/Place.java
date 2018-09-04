@@ -1,20 +1,20 @@
-package com.anton;
+package com.anton.buffer;
 
-class Place {
+public class Place {
 
     private int start;
     private int length;
 
-    Place(int start, int length) {
+    public Place(int start, int length) {
         this.start = start;
         this.length = length;
     }
 
-    int getStart() {
+    public int getStart() {
         return start;
     }
 
-    int getLength() {
+    public int getLength() {
         return length;
     }
 }

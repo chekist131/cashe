@@ -6,8 +6,8 @@ import com.anton.exceptions.BufferKeyNotFoundException;
 import com.anton.exceptions.BufferOverflowException;
 import com.anton.strateges.BufferComparator;
 import com.anton.strateges.DefaultBufferComparator;
-import com.anton.string.AbstractBuffer;
-import com.anton.string.DoubleBuffer;
+import com.anton.buffer.string.AbstractBuffer;
+import com.anton.buffer.string.DoubleBuffer;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;

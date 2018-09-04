@@ -1,7 +1,6 @@
-package com.anton.string;
+package com.anton.buffer.string;
 
-import com.anton.object.BufferEmulatorObject;
-import com.anton.string.AbstractBuffer;
+import com.anton.buffer.object.BufferEmulatorObject;
 
 public class BufferEmulator extends BufferEmulatorObject<String> implements AbstractBuffer {
 

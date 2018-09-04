@@ -4,8 +4,8 @@ import com.anton.exceptions.BufferIOException;
 import com.anton.exceptions.BufferKeyAlreadyExistsException;
 import com.anton.exceptions.BufferKeyNotFoundException;
 import com.anton.exceptions.BufferOverflowException;
-import com.anton.string.AbstractBuffer;
-import com.anton.string.BufferEmulator;
+import com.anton.buffer.string.AbstractBuffer;
+import com.anton.buffer.string.BufferEmulator;
 import org.junit.Test;
 
 public class BufferEmulatorDoubleBufferTest extends DoubleBufferTest {
