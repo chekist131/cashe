@@ -6,10 +6,7 @@ import com.anton.exceptions.BufferKeyNotFoundException;
 import com.anton.exceptions.BufferOverflowException;
 import com.anton.strateges.BufferComparator;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.Map;
 import java.util.Set;
 
@@ -54,7 +51,7 @@ public interface AbstractBufferObject<T> extends BufferableObject<T>, AutoClosea
     @Override
     void close();
 
-    default int getCountOfElements(Object o){
+    default int getCountOfElements(T o){
         int length = -100;
         try {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -69,5 +66,35 @@ public interface AbstractBufferObject<T> extends BufferableObject<T>, AutoClosea
         }
 
         return length;
+    }
+
+    default Object getElements(T o){
+        byte[] array = null;
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        try{
+            ObjectOutput objectOutput = new ObjectOutputStream(byteArrayOutputStream);
+            objectOutput.writeObject(o);
+            objectOutput.flush();
+            array = byteArrayOutputStream.toByteArray();
+            objectOutput.close();
+            byteArrayOutputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return array;
+    }
+
+    default T getObjectFromBytes(Object bytes){
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream((byte[])bytes);
+        T object = null;
+        try{
+            ObjectInput objectInput = new ObjectInputStream(byteArrayInputStream);
+            object = (T)objectInput.readObject();
+            objectInput.close();
+            byteArrayInputStream.close();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return object;
     }
 }
