@@ -9,7 +9,7 @@ import com.anton.string.AbstractBuffer;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class BufferEmulator extends AbstractBuffer {
+public class BufferEmulator implements AbstractBuffer {
 
     private Map<Integer, String> data;
 

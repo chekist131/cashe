@@ -9,7 +9,7 @@ import com.anton.string.AbstractBuffer;
 
 import java.util.*;
 
-public abstract class AbstractContinuousBuffer extends AbstractBuffer {
+public abstract class AbstractContinuousBuffer implements AbstractBuffer {
 
     private Map<Integer, Place> keysToStartAndLength;
     private int lastIndex;

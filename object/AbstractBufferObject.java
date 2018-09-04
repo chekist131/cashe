@@ -9,16 +9,16 @@ import com.anton.strateges.BufferComparator;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class AbstractBufferObject<T> implements BufferableObject<T>, AutoCloseable {
-    public abstract int getSize();
+public interface AbstractBufferObject<T> extends BufferableObject<T>, AutoCloseable {
+    int getSize();
 
-    public abstract int getUsed();
+    int getUsed();
 
-    protected int getFree(){
+    default int getFree(){
         return getSize() - getUsed();
     }
 
-    void saveSeveral(Set<Map.Entry<Integer, T>> values)
+    default void saveSeveral(Set<Map.Entry<Integer, T>> values)
             throws BufferOverflowException, BufferKeyAlreadyExistsException, BufferIOException {
         int bytes = values.stream().map(entry -> getCountOfElements(entry.getValue())).reduce(0, (a, b) -> a + b);
         if (getFree() < bytes)
@@ -29,7 +29,7 @@ public abstract class AbstractBufferObject<T> implements BufferableObject<T>, Au
             save(entry.getKey(), entry.getValue());
     }
 
-    void ejectSeveral(Set<Integer> keys) throws BufferKeyNotFoundException, BufferIOException {
+    default void ejectSeveral(Set<Integer> keys) throws BufferKeyNotFoundException, BufferIOException {
         for(int key: keys)
             restore(key);
     }
@@ -38,19 +38,19 @@ public abstract class AbstractBufferObject<T> implements BufferableObject<T>, Au
      * Return less valuable elements from (buffer + new element)
      * @return extra values
      */
-    public abstract Set<Map.Entry<Integer, T>> getExtraValues(int key, T value, BufferComparator<T> comparator) throws BufferIOException;
+    Set<Map.Entry<Integer, T>> getExtraValues(int key, T value, BufferComparator<T> comparator) throws BufferIOException;
 
     /**
      * Find most valuable elements to free freeBytes or less count of bytes
      * @param freeBytes maximum count of bytes of valuable values
      * @return valuable values
      */
-    public abstract Set<Map.Entry<Integer, T>> getValuableValues(int freeBytes, BufferComparator<T> comparator) throws BufferIOException;
+    Set<Map.Entry<Integer, T>> getValuableValues(int freeBytes, BufferComparator<T> comparator) throws BufferIOException;
 
     @Override
-    public abstract void close();
+    void close();
 
-    protected int getCountOfElements(Object o){
+    default int getCountOfElements(Object o){
         // TODO: 9/4/2018  
         return -1;
     }
