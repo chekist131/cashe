@@ -1,22 +1,20 @@
-package com.anton;
+package com.anton.object;
 
 import com.anton.exceptions.BufferKeyAlreadyExistsException;
 import com.anton.exceptions.BufferKeyNotFoundException;
 import com.anton.exceptions.BufferOverflowException;
 import com.anton.strateges.BufferComparator;
-import com.anton.string.AbstractBuffer;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class BufferEmulator implements AbstractBuffer {
-
-    private Map<Integer, String> data;
+public class BufferEmulatorObject<T> implements AbstractBufferObject<T> {
+    private Map<Integer, T> data;
 
     private int size;
     private int used;
 
-    public BufferEmulator(int bufferSize){
+    public BufferEmulatorObject(int bufferSize){
         data = new HashMap<>();
         this.size = bufferSize;
         this.used = 0;
@@ -36,17 +34,17 @@ public class BufferEmulator implements AbstractBuffer {
     }
 
     @Override
-    public Set<Map.Entry<Integer, String>> getExtraValues(int key, String value, BufferComparator<String> comparator){
+    public Set<Map.Entry<Integer, T>> getExtraValues(int key, T value, BufferComparator<T> comparator){
         data.put(key, value);
-        Set<Map.Entry<Integer, String>> extra = new TreeSet<>(Comparator.comparing(Map.Entry::getKey));
-        final int necessaryBytes = value.length() - getFree();
+        Set<Map.Entry<Integer, T>> extra = new TreeSet<>(Comparator.comparing(Map.Entry::getKey));
+        final int necessaryBytes = getCountOfElements(value) - getFree();
         int byteCounter = 0;
-        List<Map.Entry<Integer, String>> sortedExtra = data.entrySet().stream()
+        List<Map.Entry<Integer, T>> sortedExtra = data.entrySet().stream()
                 .sorted(comparator.reversed())
                 .collect(Collectors.toList());
-        for(Map.Entry<Integer, String> e: sortedExtra){
+        for(Map.Entry<Integer, T> e: sortedExtra){
             extra.add(e);
-            byteCounter += e.getValue().length();
+            byteCounter += getCountOfElements(e.getValue());
             if (byteCounter >= necessaryBytes)
                 break;
         }
@@ -55,14 +53,14 @@ public class BufferEmulator implements AbstractBuffer {
     }
 
     @Override
-    public Set<Map.Entry<Integer, String>> getValuableValues(final int freeBytes, BufferComparator<String> comparator){
-        Set<Map.Entry<Integer, String>> extra = new TreeSet<>(Comparator.comparing(Map.Entry::getKey));
+    public Set<Map.Entry<Integer, T>> getValuableValues(final int freeBytes, BufferComparator<T> comparator){
+        Set<Map.Entry<Integer, T>> extra = new TreeSet<>(Comparator.comparing(Map.Entry::getKey));
         int byteCounter = 0;
-        List<Map.Entry<Integer, String>> sortedExtra = data.entrySet().stream()
+        List<Map.Entry<Integer, T>> sortedExtra = data.entrySet().stream()
                 .sorted(comparator)
                 .collect(Collectors.toList());
-        for(Map.Entry<Integer, String> e: sortedExtra){
-            byteCounter += e.getValue().length();
+        for(Map.Entry<Integer, T> e: sortedExtra){
+            byteCounter += getCountOfElements(e.getValue());
             if (byteCounter > freeBytes)
                 break;
             extra.add(e);
@@ -71,22 +69,22 @@ public class BufferEmulator implements AbstractBuffer {
     }
 
     @Override
-    public void save(int key, String o) throws BufferOverflowException, BufferKeyAlreadyExistsException {
+    public void save(int key, T o) throws BufferOverflowException, BufferKeyAlreadyExistsException {
         if (data.containsKey(key))
             throw new BufferKeyAlreadyExistsException();
-        if (getFree() < o.length())
-            throw new BufferOverflowException(getFree(), o.length());
-        used += o.length();
+        if (getFree() < getCountOfElements(o))
+            throw new BufferOverflowException(getFree(), getCountOfElements(o));
+        used += getCountOfElements(o);
         data.put(key, o);
     }
 
     @Override
-    public String restore(int key) throws BufferKeyNotFoundException {
-        String result = data.get(key);
+    public T restore(int key) throws BufferKeyNotFoundException {
+        T result = data.get(key);
         if (result == null)
             throw new BufferKeyNotFoundException(key);
         data.remove(key);
-        used -= result.length();
+        used -= getCountOfElements(result);
         return result;
     }
 
