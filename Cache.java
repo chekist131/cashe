@@ -20,12 +20,10 @@ public class Cache implements Bufferable, AutoCloseable {
     private AbstractBuffer internalBufferForDoubleBuffer;
 
     public Cache(int externalBufferSize, int internalBufferSize,
-                 Function<Map<Integer, Date>, CacheStrategy> cacheStrategyConstructor) {
+                 Function<Map<Integer, Date>, CacheStrategy> cacheStrategyConstructor) throws BufferIOException {
         savingTime = new TreeMap<>();
-        this.externalBufferForDoubleBuffer =
-                BufferFactory.getBufferEmulator(externalBufferSize, null);
-        this.internalBufferForDoubleBuffer =
-                BufferFactory.getBufferEmulator(internalBufferSize, null);
+        this.externalBufferForDoubleBuffer = new ArrayBuffer(externalBufferSize);
+        this.internalBufferForDoubleBuffer = new FileBuffer(internalBufferSize, "cacheL2Buffer");
         this.doubleBuffer = new DoubleBuffer(
                 this.externalBufferForDoubleBuffer,
                 this.internalBufferForDoubleBuffer,

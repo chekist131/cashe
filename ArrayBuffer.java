@@ -7,8 +7,7 @@ public class ArrayBuffer extends AbstractContinuousBuffer {
 
     private char[] data;
 
-    ArrayBuffer(int bufferSize, BufferComparator comparator) {
-        super(comparator);
+    public ArrayBuffer(int bufferSize) {
         data = new char[bufferSize];
     }
 

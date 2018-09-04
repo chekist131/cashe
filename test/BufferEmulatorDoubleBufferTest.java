@@ -11,8 +11,8 @@ public class BufferEmulatorDoubleBufferTest extends DoubleBufferTest {
     @Test
     public void saveAndRestore() throws BufferKeyAlreadyExistsException, BufferIOException, BufferKeyNotFoundException, BufferOverflowException {
         try(
-                AbstractBuffer extBuf = BufferFactory.getBufferEmulator(externalBufferSize, null);
-                AbstractBuffer intBuf = BufferFactory.getBufferEmulator(internalBufferSize, null)
+                AbstractBuffer extBuf = new BufferEmulator(externalBufferSize);
+                AbstractBuffer intBuf = new BufferEmulator(internalBufferSize)
         ){
             super.saveAndRestore(extBuf, intBuf);
         }

@@ -10,8 +10,7 @@ public class FileBuffer extends AbstractContinuousBuffer {
     private String fileName;
     private int size;
 
-    FileBuffer(int bufferSize, BufferComparator comparator, String fileName) throws BufferIOException {
-        super(comparator);
+    public FileBuffer(int bufferSize, String fileName) throws BufferIOException {
         this.size = bufferSize;
         this.fileName = fileName;
         File f = new File(this.fileName);

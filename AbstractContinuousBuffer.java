@@ -13,8 +13,7 @@ public abstract class AbstractContinuousBuffer extends AbstractBuffer {
     private Map<Integer, Place> keysToStartAndLength;
     private int lastIndex;
 
-    AbstractContinuousBuffer(BufferComparator comparator) {
-        super(comparator);
+    AbstractContinuousBuffer() {
         this.lastIndex = 0;
         this.keysToStartAndLength = new TreeMap<>();
     }
@@ -30,9 +29,9 @@ public abstract class AbstractContinuousBuffer extends AbstractBuffer {
     }
 
     @Override
-    protected Set<Map.Entry<Integer, String>> getExtraValues(int key, String value) throws BufferIOException {
+    protected Set<Map.Entry<Integer, String>> getExtraValues(int key, String value, BufferComparator comparator) throws BufferIOException {
         char[] data = fetch();
-        SortedSet<Map.Entry<Integer, String>> allData = new TreeSet<>(getComparator().reversed());
+        SortedSet<Map.Entry<Integer, String>> allData = new TreeSet<>(comparator.reversed());
         for(Map.Entry<Integer, Place> keyToStartAndLength: keysToStartAndLength.entrySet()){
             allData.add(new AbstractMap.SimpleImmutableEntry<>(keyToStartAndLength.getKey(),
                     new String(data, keyToStartAndLength.getValue().getStart(), keyToStartAndLength.getValue().getLength())));
@@ -51,9 +50,9 @@ public abstract class AbstractContinuousBuffer extends AbstractBuffer {
     }
 
     @Override
-    protected Set<Map.Entry<Integer, String>> getValuableValues(int freeBytes) throws BufferIOException {
+    protected Set<Map.Entry<Integer, String>> getValuableValues(int freeBytes, BufferComparator comparator) throws BufferIOException {
         char[] data = fetch();
-        SortedSet<Map.Entry<Integer, String>> allData = new TreeSet<>(getComparator());
+        SortedSet<Map.Entry<Integer, String>> allData = new TreeSet<>(comparator);
         for(Map.Entry<Integer, Place> keyToStartAndLength: keysToStartAndLength.entrySet()){
             allData.add(new AbstractMap.SimpleImmutableEntry<>(keyToStartAndLength.getKey(),
                     new String(data, keyToStartAndLength.getValue().getStart(), keyToStartAndLength.getValue().getLength())));

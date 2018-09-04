@@ -14,15 +14,15 @@ public class DoubleBuffer implements Bufferable {
 
     private AbstractBuffer externalBuffer;
     private AbstractBuffer internalBuffer;
+    private BufferComparator comparator;
 
     public DoubleBuffer(
             AbstractBuffer externalBuffer,
             AbstractBuffer internalBuffer,
             BufferComparator comparator) {
         this.externalBuffer = externalBuffer;
-        this.externalBuffer.setComparator(comparator);
         this.internalBuffer = internalBuffer;
-        this.internalBuffer.setComparator(comparator);
+        this.comparator = comparator;
     }
 
     public int getExternalBufferUsed(){
@@ -31,6 +31,10 @@ public class DoubleBuffer implements Bufferable {
 
     public int getInternalBufferUsed(){
         return internalBuffer.getUsed();
+    }
+
+    public BufferComparator getComparator() {
+        return comparator;
     }
 
     @Override
@@ -43,7 +47,7 @@ public class DoubleBuffer implements Bufferable {
         try{
             externalBuffer.save(key, o);
         } catch (BufferOverflowException e){
-            Set<Map.Entry<Integer, String>> extraValues = externalBuffer.getExtraValues(key, o);
+            Set<Map.Entry<Integer, String>> extraValues = externalBuffer.getExtraValues(key, o, comparator);
             try{
                 internalBuffer.saveSeveral(extraValues);
             } catch (BufferKeyAlreadyExistsException ignored){
@@ -69,7 +73,7 @@ public class DoubleBuffer implements Bufferable {
     public String restore(int key) throws BufferKeyNotFoundException, BufferIOException {
         try{
             String value = externalBuffer.restore(key);
-            Set<Map.Entry<Integer, String>> valuableValues = internalBuffer.getValuableValues(externalBuffer.getFree());
+            Set<Map.Entry<Integer, String>> valuableValues = internalBuffer.getValuableValues(externalBuffer.getFree(), comparator);
             try{
                 externalBuffer.saveSeveral(valuableValues);
             } catch (BufferKeyAlreadyExistsException | BufferOverflowException ignored){

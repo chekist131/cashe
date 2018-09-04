@@ -10,21 +10,6 @@ import java.util.Map;
 import java.util.Set;
 
 public abstract class AbstractBuffer implements Bufferable, AutoCloseable {
-
-    private BufferComparator comparator;
-
-    AbstractBuffer(BufferComparator comparator) {
-        this.comparator = comparator;
-    }
-
-    BufferComparator getComparator() {
-        return comparator;
-    }
-
-    public void setComparator(BufferComparator comparator) {
-        this.comparator = comparator;
-    }
-
     public abstract int getSize();
 
     public abstract int getUsed();
@@ -53,14 +38,14 @@ public abstract class AbstractBuffer implements Bufferable, AutoCloseable {
      * Return less valuable elements from (buffer + new element)
      * @return extra values
      */
-    protected abstract Set<Map.Entry<Integer, String>> getExtraValues(int key, String value) throws BufferIOException;
+    protected abstract Set<Map.Entry<Integer, String>> getExtraValues(int key, String value, BufferComparator comparator) throws BufferIOException;
 
     /**
      * Find most valuable elements to free freeBytes or less count of bytes
      * @param freeBytes maximum count of bytes of valuable values
      * @return valuable values
      */
-    protected abstract Set<Map.Entry<Integer, String>> getValuableValues(final int freeBytes) throws BufferIOException;
+    protected abstract Set<Map.Entry<Integer, String>> getValuableValues(final int freeBytes, BufferComparator comparator) throws BufferIOException;
 
     @Override
     public abstract void close();

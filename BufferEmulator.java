@@ -16,8 +16,7 @@ public class BufferEmulator extends AbstractBuffer {
     private int size;
     private int used;
 
-    BufferEmulator(int bufferSize, BufferComparator comparator){
-        super(comparator);
+    public BufferEmulator(int bufferSize){
         data = new HashMap<>();
         this.size = bufferSize;
         this.used = 0;
@@ -37,13 +36,13 @@ public class BufferEmulator extends AbstractBuffer {
     }
 
     @Override
-    protected Set<Map.Entry<Integer, String>> getExtraValues(int key, String value){
+    protected Set<Map.Entry<Integer, String>> getExtraValues(int key, String value, BufferComparator comparator){
         data.put(key, value);
         Set<Map.Entry<Integer, String>> extra = new TreeSet<>(Comparator.comparing(Map.Entry::getKey));
         final int necessaryBytes = value.length() - getFree();
         int byteCounter = 0;
         List<Map.Entry<Integer, String>> sortedExtra = data.entrySet().stream()
-                .sorted(getComparator().reversed())
+                .sorted(comparator.reversed())
                 .collect(Collectors.toList());
         for(Map.Entry<Integer, String> e: sortedExtra){
             extra.add(e);
@@ -56,11 +55,11 @@ public class BufferEmulator extends AbstractBuffer {
     }
 
     @Override
-    protected Set<Map.Entry<Integer, String>> getValuableValues(final int freeBytes){
+    protected Set<Map.Entry<Integer, String>> getValuableValues(final int freeBytes, BufferComparator comparator){
         Set<Map.Entry<Integer, String>> extra = new TreeSet<>(Comparator.comparing(Map.Entry::getKey));
         int byteCounter = 0;
         List<Map.Entry<Integer, String>> sortedExtra = data.entrySet().stream()
-                .sorted(getComparator())
+                .sorted(comparator)
                 .collect(Collectors.toList());
         for(Map.Entry<Integer, String> e: sortedExtra){
             byteCounter += e.getValue().length();
