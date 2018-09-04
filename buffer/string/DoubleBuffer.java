@@ -1,5 +1,6 @@
 package com.anton.buffer.string;
 
+import com.anton.buffer.object.AbstractBufferObject;
 import com.anton.buffer.object.DoubleBufferObject;
 import com.anton.strateges.BufferComparator;
 

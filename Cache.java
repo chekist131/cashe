@@ -1,5 +1,6 @@
 package com.anton;
 
+import com.anton.buffer.object.DoubleBufferObject;
 import com.anton.buffer.string.*;
 import com.anton.exceptions.BufferIOException;
 import com.anton.exceptions.BufferKeyAlreadyExistsException;
@@ -14,7 +15,7 @@ import java.util.function.Function;
 
 public class Cache implements Bufferable, AutoCloseable {
 
-    private DoubleBuffer doubleBuffer;
+    private DoubleBufferObject<String> doubleBuffer;
     private Map<Integer, Date> savingTime;
 
     private AbstractBuffer externalBufferForDoubleBuffer;
@@ -25,7 +26,7 @@ public class Cache implements Bufferable, AutoCloseable {
         savingTime = new TreeMap<>();
         this.externalBufferForDoubleBuffer = new ArrayBuffer(externalBufferSize);
         this.internalBufferForDoubleBuffer = new FileBuffer(internalBufferSize, "cacheL2Buffer");
-        this.doubleBuffer = new DoubleBuffer(
+        this.doubleBuffer = new DoubleBufferObject<>(
                 this.externalBufferForDoubleBuffer,
                 this.internalBufferForDoubleBuffer,
                 cacheStrategyConstructor.apply(this.savingTime));

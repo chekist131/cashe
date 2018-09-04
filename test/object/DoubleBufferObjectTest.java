@@ -1,20 +1,19 @@
-package com.anton.test;
+package com.anton.test.object;
 
+import com.anton.buffer.object.AbstractBufferObject;
+import com.anton.buffer.object.DoubleBufferObject;
 import com.anton.exceptions.BufferIOException;
 import com.anton.exceptions.BufferKeyAlreadyExistsException;
 import com.anton.exceptions.BufferKeyNotFoundException;
 import com.anton.exceptions.BufferOverflowException;
 import com.anton.strateges.BufferComparator;
 import com.anton.strateges.DefaultBufferComparator;
-import com.anton.buffer.string.AbstractBuffer;
-import com.anton.buffer.string.DoubleBuffer;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-abstract class DoubleBufferTest {
-
-    static int externalBufferSize = 5;
+public abstract class DoubleBufferObjectTest {
+    static int externalBufferSize = 45;
     static int internalBufferSize = 10;
     private static BufferComparator<String> comparator = new DefaultBufferComparator();
 
@@ -23,17 +22,17 @@ abstract class DoubleBufferTest {
             BufferIOException, BufferKeyNotFoundException;
 
     void saveAndRestore(
-            AbstractBuffer externalBuffer,
-            AbstractBuffer internalBuffer)
+            AbstractBufferObject<String> externalBuffer,
+            AbstractBufferObject<String> internalBuffer)
             throws
             BufferOverflowException,
             BufferKeyAlreadyExistsException,
             BufferIOException,
             BufferKeyNotFoundException {
-        DoubleBuffer doubleBuffer = new DoubleBuffer(externalBuffer, internalBuffer, comparator);
+        DoubleBufferObject<String> doubleBuffer = new DoubleBufferObject<>(externalBuffer, internalBuffer, comparator);
 
         doubleBuffer.save(1, "Igor");
-        assertEquals(4, doubleBuffer.getExternalBufferUsed());
+        assertEquals(11, doubleBuffer.getExternalBufferUsed());
         assertEquals(0, doubleBuffer.getInternalBufferUsed());
 
         try{
@@ -42,24 +41,24 @@ abstract class DoubleBufferTest {
         } catch (BufferKeyAlreadyExistsException ignored){ }
 
         doubleBuffer.save(2, "Anton");
-        assertEquals(5, doubleBuffer.getExternalBufferUsed());
-        assertEquals(4, doubleBuffer.getInternalBufferUsed());
+        assertEquals(23, doubleBuffer.getExternalBufferUsed());
+        assertEquals(0, doubleBuffer.getInternalBufferUsed());
 
         doubleBuffer.save(3, "Anuta");
-        assertEquals(5, doubleBuffer.getExternalBufferUsed());
-        assertEquals(9, doubleBuffer.getInternalBufferUsed());
+        assertEquals(35, doubleBuffer.getExternalBufferUsed());
+        assertEquals(0, doubleBuffer.getInternalBufferUsed());
 
         try{
             doubleBuffer.save(5, "Nick");
             assertNotEquals(1,1);
         } catch (BufferOverflowException e){
-            assertEquals(1, e.getBytesRemain());
-            assertEquals(4, e.getBytesRequire());
+            assertEquals(10, e.getBytesRemain());
+            assertEquals(11, e.getBytesRequire());
         }
 
         doubleBuffer.save(4, "J");
-        assertEquals(5, doubleBuffer.getExternalBufferUsed());
-        assertEquals(10, doubleBuffer.getInternalBufferUsed());
+        assertEquals(43, doubleBuffer.getExternalBufferUsed());
+        assertEquals(0, doubleBuffer.getInternalBufferUsed());
 
         try{
             doubleBuffer.restore(0);
@@ -69,8 +68,8 @@ abstract class DoubleBufferTest {
         }
 
         assertEquals("Anuta", doubleBuffer.restore(3));
-        assertEquals(doubleBuffer.getExternalBufferUsed(), 5);
-        assertEquals(doubleBuffer.getInternalBufferUsed(), 5);
+        assertEquals(doubleBuffer.getExternalBufferUsed(), 31);
+        assertEquals(doubleBuffer.getInternalBufferUsed(), 0);
 
         try{
             doubleBuffer.save(3, "Druba");
@@ -79,11 +78,11 @@ abstract class DoubleBufferTest {
         }
 
         assertEquals("Igor", doubleBuffer.restore(1));
-        assertEquals(5, doubleBuffer.getExternalBufferUsed());
-        assertEquals(6, doubleBuffer.getInternalBufferUsed());
+        assertEquals(32, doubleBuffer.getExternalBufferUsed());
+        assertEquals(0, doubleBuffer.getInternalBufferUsed());
 
         assertEquals("Anton", doubleBuffer.restore(2));
-        assertEquals(5, doubleBuffer.getExternalBufferUsed());
-        assertEquals(1, doubleBuffer.getInternalBufferUsed());
+        assertEquals(20, doubleBuffer.getExternalBufferUsed());
+        assertEquals(0, doubleBuffer.getInternalBufferUsed());
     }
 }

@@ -1,4 +1,4 @@
-package com.anton.test;
+package com.anton.test.text;
 
 import com.anton.exceptions.BufferIOException;
 import com.anton.exceptions.BufferKeyAlreadyExistsException;

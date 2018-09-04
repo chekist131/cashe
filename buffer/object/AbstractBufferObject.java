@@ -6,6 +6,10 @@ import com.anton.exceptions.BufferKeyNotFoundException;
 import com.anton.exceptions.BufferOverflowException;
 import com.anton.strateges.BufferComparator;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.util.Map;
 import java.util.Set;
 
@@ -51,7 +55,19 @@ public interface AbstractBufferObject<T> extends BufferableObject<T>, AutoClosea
     void close();
 
     default int getCountOfElements(Object o){
-        // TODO: 9/4/2018  
-        return -1;
+        int length = -100;
+        try {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            ObjectOutput objectOutput = new ObjectOutputStream(byteArrayOutputStream);
+            objectOutput.writeObject(o);
+            objectOutput.flush();
+            length = byteArrayOutputStream.toByteArray().length;
+            objectOutput.close();
+            byteArrayOutputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return length;
     }
 }
