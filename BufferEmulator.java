@@ -1,10 +1,10 @@
 package com.anton;
 
-import com.anton.exceptions.BufferIOException;
 import com.anton.exceptions.BufferKeyAlreadyExistsException;
 import com.anton.exceptions.BufferKeyNotFoundException;
 import com.anton.exceptions.BufferOverflowException;
 import com.anton.strateges.BufferComparator;
+import com.anton.string.AbstractBuffer;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -36,7 +36,7 @@ public class BufferEmulator extends AbstractBuffer {
     }
 
     @Override
-    public Set<Map.Entry<Integer, String>> getExtraValues(int key, String value, BufferComparator comparator){
+    public Set<Map.Entry<Integer, String>> getExtraValues(int key, String value, BufferComparator<String> comparator){
         data.put(key, value);
         Set<Map.Entry<Integer, String>> extra = new TreeSet<>(Comparator.comparing(Map.Entry::getKey));
         final int necessaryBytes = value.length() - getFree();
@@ -55,7 +55,7 @@ public class BufferEmulator extends AbstractBuffer {
     }
 
     @Override
-    public Set<Map.Entry<Integer, String>> getValuableValues(final int freeBytes, BufferComparator comparator){
+    public Set<Map.Entry<Integer, String>> getValuableValues(final int freeBytes, BufferComparator<String> comparator){
         Set<Map.Entry<Integer, String>> extra = new TreeSet<>(Comparator.comparing(Map.Entry::getKey));
         int byteCounter = 0;
         List<Map.Entry<Integer, String>> sortedExtra = data.entrySet().stream()

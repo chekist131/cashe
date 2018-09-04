@@ -1,12 +1,13 @@
 package com.anton.test;
 
-import com.anton.*;
 import com.anton.exceptions.BufferIOException;
 import com.anton.exceptions.BufferKeyAlreadyExistsException;
 import com.anton.exceptions.BufferKeyNotFoundException;
 import com.anton.exceptions.BufferOverflowException;
 import com.anton.strateges.BufferComparator;
 import com.anton.strateges.DefaultBufferComparator;
+import com.anton.string.AbstractBuffer;
+import com.anton.string.DoubleBuffer;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -15,7 +16,7 @@ abstract class DoubleBufferTest {
 
     static int externalBufferSize = 5;
     static int internalBufferSize = 10;
-    private static BufferComparator comparator = new DefaultBufferComparator();
+    private static BufferComparator<String> comparator = new DefaultBufferComparator();
 
     public abstract void saveAndRestore()
             throws BufferOverflowException, BufferKeyAlreadyExistsException,

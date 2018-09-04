@@ -1,6 +1,6 @@
 package com.anton.test;
 
-import com.anton.AbstractBuffer;
+import com.anton.string.AbstractBuffer;
 import com.anton.FileBuffer;
 import com.anton.exceptions.BufferIOException;
 import com.anton.exceptions.BufferKeyAlreadyExistsException;

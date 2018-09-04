@@ -1,4 +1,4 @@
-package com.anton;
+package com.anton.object;
 
 import com.anton.exceptions.BufferIOException;
 import com.anton.exceptions.BufferKeyAlreadyExistsException;
@@ -10,16 +10,16 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class DoubleBuffer implements Bufferable {
+public class DoubleBufferObject<T> implements BufferableObject<T> {
 
-    private AbstractBuffer externalBuffer;
-    private AbstractBuffer internalBuffer;
-    private BufferComparator comparator;
+    private AbstractBufferObject<T> externalBuffer;
+    private AbstractBufferObject<T> internalBuffer;
+    private BufferComparator<T> comparator;
 
-    public DoubleBuffer(
-            AbstractBuffer externalBuffer,
-            AbstractBuffer internalBuffer,
-            BufferComparator comparator) {
+    public DoubleBufferObject(
+            AbstractBufferObject<T> externalBuffer,
+            AbstractBufferObject<T> internalBuffer,
+            BufferComparator<T> comparator) {
         this.externalBuffer = externalBuffer;
         this.internalBuffer = internalBuffer;
         this.comparator = comparator;
@@ -33,21 +33,17 @@ public class DoubleBuffer implements Bufferable {
         return internalBuffer.getUsed();
     }
 
-    public BufferComparator getComparator() {
-        return comparator;
-    }
-
     @Override
     public boolean isContainsKey(int key) {
         return externalBuffer.isContainsKey(key) || internalBuffer.isContainsKey(key);
     }
 
     @Override
-    public void save(int key, String o) throws BufferOverflowException, BufferKeyAlreadyExistsException, BufferIOException {
+    public void save(int key, T o) throws BufferOverflowException, BufferKeyAlreadyExistsException, BufferIOException {
         try{
             externalBuffer.save(key, o);
         } catch (BufferOverflowException e){
-            Set<Map.Entry<Integer, String>> extraValues = externalBuffer.getExtraValues(key, o, comparator);
+            Set<Map.Entry<Integer, T>> extraValues = externalBuffer.getExtraValues(key, o, comparator);
             try{
                 internalBuffer.saveSeveral(extraValues);
             } catch (BufferKeyAlreadyExistsException ignored){
@@ -70,10 +66,10 @@ public class DoubleBuffer implements Bufferable {
     }
 
     @Override
-    public String restore(int key) throws BufferKeyNotFoundException, BufferIOException {
+    public T restore(int key) throws BufferKeyNotFoundException, BufferIOException {
         try{
-            String value = externalBuffer.restore(key);
-            Set<Map.Entry<Integer, String>> valuableValues = internalBuffer.getValuableValues(externalBuffer.getFree(), comparator);
+            T value = externalBuffer.restore(key);
+            Set<Map.Entry<Integer, T>> valuableValues = internalBuffer.getValuableValues(externalBuffer.getFree(), comparator);
             try{
                 externalBuffer.saveSeveral(valuableValues);
             } catch (BufferKeyAlreadyExistsException | BufferOverflowException ignored){

@@ -5,6 +5,7 @@ import com.anton.exceptions.BufferKeyAlreadyExistsException;
 import com.anton.exceptions.BufferKeyNotFoundException;
 import com.anton.exceptions.BufferOverflowException;
 import com.anton.strateges.BufferComparator;
+import com.anton.string.AbstractBuffer;
 
 import java.util.*;
 
@@ -29,7 +30,7 @@ public abstract class AbstractContinuousBuffer extends AbstractBuffer {
     }
 
     @Override
-    public Set<Map.Entry<Integer, String>> getExtraValues(int key, String value, BufferComparator comparator) throws BufferIOException {
+    public Set<Map.Entry<Integer, String>> getExtraValues(int key, String value, BufferComparator<String> comparator) throws BufferIOException {
         char[] data = fetch();
         SortedSet<Map.Entry<Integer, String>> allData = new TreeSet<>(comparator.reversed());
         for(Map.Entry<Integer, Place> keyToStartAndLength: keysToStartAndLength.entrySet()){
@@ -50,7 +51,7 @@ public abstract class AbstractContinuousBuffer extends AbstractBuffer {
     }
 
     @Override
-    public Set<Map.Entry<Integer, String>> getValuableValues(int freeBytes, BufferComparator comparator) throws BufferIOException {
+    public Set<Map.Entry<Integer, String>> getValuableValues(int freeBytes, BufferComparator<String> comparator) throws BufferIOException {
         char[] data = fetch();
         SortedSet<Map.Entry<Integer, String>> allData = new TreeSet<>(comparator);
         for(Map.Entry<Integer, Place> keyToStartAndLength: keysToStartAndLength.entrySet()){
