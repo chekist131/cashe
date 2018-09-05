@@ -3,11 +3,11 @@ package com.anton.buffer.object.strategies;
 import java.util.Date;
 import java.util.Map;
 
-public abstract class CacheStrategy<T> implements BufferComparator<T>  {
+public abstract class CacheStrategy<T, Key> implements BufferComparator<T, Key>  {
 
-    Map<Integer, Date> savingTime;
+    Map<Key, Date> savingTime;
 
-    CacheStrategy(Map<Integer, Date> savingTime) {
+    CacheStrategy(Map<Key, Date> savingTime) {
         this.savingTime = savingTime;
     }
 

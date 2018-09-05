@@ -8,15 +8,16 @@ import com.anton.exceptions.BufferKeyNotFoundException;
 import com.anton.exceptions.BufferOverflowException;
 import com.anton.buffer.object.strategies.BufferComparator;
 
+import java.security.Key;
 import java.util.*;
 
-public abstract class ContinuousBuffer<T> extends IContinuousBuffer<T> {
+public abstract class ContinuousBuffer<T, Key extends Comparable<? super Key>> extends IContinuousBuffer<T, Key> {
     @Override
-    public Set<Map.Entry<Integer, T>> getExtraValues(int key, T value, BufferComparator<T> comparator)
+    public Set<Map.Entry<Key, T>> getExtraValues(Key key, T value, BufferComparator<T, Key> comparator)
             throws BufferIOException {
         byte[] data = fetch();
-        SortedSet<Map.Entry<Integer, T>> allData = new TreeSet<>(comparator.reversed());
-        for(Map.Entry<Integer, Place> keyToStartAndLength: keysToStartAndLength.entrySet()){
+        SortedSet<Map.Entry<Key, T>> allData = new TreeSet<>(comparator.reversed());
+        for(Map.Entry<Key, Place> keyToStartAndLength: keysToStartAndLength.entrySet()){
             int to = keyToStartAndLength.getValue().getLength() + keyToStartAndLength.getValue().getStart();
             int start = keyToStartAndLength.getValue().getStart();
             allData.add(
@@ -25,10 +26,10 @@ public abstract class ContinuousBuffer<T> extends IContinuousBuffer<T> {
                             getObjectFromBytes(Arrays.copyOfRange(data, start, to))));
         }
         allData.add(new AbstractMap.SimpleImmutableEntry<>(key, value));
-        Set<Map.Entry<Integer, T>> extra = new TreeSet<>(Comparator.comparing(Map.Entry::getKey));
+        Set<Map.Entry<Key, T>> extra = new TreeSet<>(Comparator.comparing(Map.Entry::getKey));
         final int necessaryBytes = getCountOfElements(value) - getFree();
         int byteCounter = 0;
-        for(Map.Entry<Integer, T> e: allData){
+        for(Map.Entry<Key, T> e: allData){
             extra.add(e);
             byteCounter += e.getKey() == key ?
                     getCountOfElements(value) :
@@ -40,20 +41,20 @@ public abstract class ContinuousBuffer<T> extends IContinuousBuffer<T> {
     }
 
     @Override
-    public Set<Map.Entry<Integer, T>> getValuableValues(int freeBytes, BufferComparator<T> comparator)
+    public Set<Map.Entry<Key, T>> getValuableValues(int freeBytes, BufferComparator<T, Key> comparator)
             throws BufferIOException {
         byte[] data = fetch();
-        SortedSet<Map.Entry<Integer, T>> allData = new TreeSet<>(comparator);
-        for(Map.Entry<Integer, Place> keyToStartAndLength: keysToStartAndLength.entrySet()){
+        SortedSet<Map.Entry<Key, T>> allData = new TreeSet<>(comparator);
+        for(Map.Entry<Key, Place> keyToStartAndLength: keysToStartAndLength.entrySet()){
             int to = keyToStartAndLength.getValue().getLength() + keyToStartAndLength.getValue().getStart();
             int start = keyToStartAndLength.getValue().getStart();
             allData.add(new AbstractMap.SimpleImmutableEntry<>(
                     keyToStartAndLength.getKey(),
                     getObjectFromBytes(Arrays.copyOfRange(data, start, to))));
         }
-        Set<Map.Entry<Integer, T>> extra = new TreeSet<>(Comparator.comparing(Map.Entry::getKey));
+        Set<Map.Entry<Key, T>> extra = new TreeSet<>(Comparator.comparing(Map.Entry::getKey));
         int byteCounter = 0;
-        for(Map.Entry<Integer, T> e: allData){
+        for(Map.Entry<Key, T> e: allData){
             byteCounter += keysToStartAndLength.get(e.getKey()).getLength();
             if (byteCounter > freeBytes)
                 break;
@@ -63,7 +64,7 @@ public abstract class ContinuousBuffer<T> extends IContinuousBuffer<T> {
     }
 
     @Override
-    public void save(int key, T o) throws BufferOverflowException, BufferKeyAlreadyExistsException, BufferIOException {
+    public void save(Key key, T o) throws BufferOverflowException, BufferKeyAlreadyExistsException, BufferIOException {
         if (keysToStartAndLength.containsKey(key))
             throw new BufferKeyAlreadyExistsException();
         byte[] valueBytes = (byte[])getElements(o);
@@ -79,7 +80,7 @@ public abstract class ContinuousBuffer<T> extends IContinuousBuffer<T> {
     }
 
     @Override
-    public T restore(int key) throws BufferKeyNotFoundException, BufferIOException {
+    public T restore(Key key) throws BufferKeyNotFoundException, BufferIOException {
         if (!keysToStartAndLength.containsKey(key))
             throw new BufferKeyNotFoundException(key);
         Place startAndLengthValue = keysToStartAndLength.get(key);
@@ -96,7 +97,7 @@ public abstract class ContinuousBuffer<T> extends IContinuousBuffer<T> {
         for (int i = lastIndex - startAndLengthValue.getLength(); i < lastIndex; i++)
             data[i] = (byte) -1;
         stash(data);
-        for (Map.Entry<Integer, Place> keyToStartAndLengthTemp : keysToStartAndLength.entrySet()) {
+        for (Map.Entry<Key, Place> keyToStartAndLengthTemp : keysToStartAndLength.entrySet()) {
             if (keyToStartAndLengthTemp.getValue().getStart() > startAndLengthValue.getStart())
                 keyToStartAndLengthTemp.setValue(new Place(
                         keyToStartAndLengthTemp.getValue().getStart() - startAndLengthValue.getLength(),

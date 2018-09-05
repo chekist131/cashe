@@ -15,8 +15,8 @@ public class ArrayTest extends ObjectTest {
             throws BufferOverflowException, BufferKeyAlreadyExistsException,
             BufferIOException, BufferKeyNotFoundException {
         try(
-                Buffer<String> extBuf = new ArrayBuffer<>(externalBufferSize);
-                Buffer<String> intBuf = new ArrayBuffer<>(internalBufferSize)
+                Buffer<String, Integer> extBuf = new ArrayBuffer<>(externalBufferSize);
+                Buffer<String, Integer> intBuf = new ArrayBuffer<>(internalBufferSize)
         ){
             super.saveAndRestore(extBuf, intBuf);
         }

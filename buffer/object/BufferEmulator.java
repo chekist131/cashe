@@ -6,11 +6,12 @@ import com.anton.exceptions.BufferKeyNotFoundException;
 import com.anton.exceptions.BufferOverflowException;
 import com.anton.buffer.object.strategies.BufferComparator;
 
+import java.security.Key;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class BufferEmulator<T> implements Buffer<T> {
-    private Map<Integer, T> data;
+public class BufferEmulator<T, Key extends Comparable<? super Key>> implements Buffer<T, Key> {
+    private Map<Key, T> data;
 
     private int size;
     private int used;
@@ -30,20 +31,20 @@ public class BufferEmulator<T> implements Buffer<T> {
     }
 
     @Override
-    public boolean isContainsKey(int key) {
+    public boolean isContainsKey(Key key) {
         return data.containsKey(key);
     }
 
     @Override
-    public Set<Map.Entry<Integer, T>> getExtraValues(int key, T value, BufferComparator<T> comparator) throws BufferIOException {
+    public Set<Map.Entry<Key, T>> getExtraValues(Key key, T value, BufferComparator<T, Key> comparator) throws BufferIOException {
         data.put(key, value);
-        Set<Map.Entry<Integer, T>> extra = new TreeSet<>(Comparator.comparing(Map.Entry::getKey));
+        Set<Map.Entry<Key, T>> extra = new TreeSet<>(Comparator.comparing(Map.Entry::getKey));
         final int necessaryBytes = getCountOfElements(value) - getFree();
         int byteCounter = 0;
-        List<Map.Entry<Integer, T>> sortedExtra = data.entrySet().stream()
+        List<Map.Entry<Key, T>> sortedExtra = data.entrySet().stream()
                 .sorted(comparator.reversed())
                 .collect(Collectors.toList());
-        for(Map.Entry<Integer, T> e: sortedExtra){
+        for(Map.Entry<Key, T> e: sortedExtra){
             extra.add(e);
             byteCounter += getCountOfElements(e.getValue());
             if (byteCounter >= necessaryBytes)
@@ -54,13 +55,13 @@ public class BufferEmulator<T> implements Buffer<T> {
     }
 
     @Override
-    public Set<Map.Entry<Integer, T>> getValuableValues(final int freeBytes, BufferComparator<T> comparator) throws BufferIOException {
-        Set<Map.Entry<Integer, T>> extra = new TreeSet<>(Comparator.comparing(Map.Entry::getKey));
+    public Set<Map.Entry<Key, T>> getValuableValues(final int freeBytes, BufferComparator<T, Key> comparator) throws BufferIOException {
+        Set<Map.Entry<Key, T>> extra = new TreeSet<>(Comparator.comparing(Map.Entry::getKey));
         int byteCounter = 0;
-        List<Map.Entry<Integer, T>> sortedExtra = data.entrySet().stream()
+        List<Map.Entry<Key, T>> sortedExtra = data.entrySet().stream()
                 .sorted(comparator)
                 .collect(Collectors.toList());
-        for(Map.Entry<Integer, T> e: sortedExtra){
+        for(Map.Entry<Key, T> e: sortedExtra){
             byteCounter += getCountOfElements(e.getValue());
             if (byteCounter > freeBytes)
                 break;
@@ -70,7 +71,7 @@ public class BufferEmulator<T> implements Buffer<T> {
     }
 
     @Override
-    public void save(int key, T o) throws BufferOverflowException, BufferKeyAlreadyExistsException, BufferIOException {
+    public void save(Key key, T o) throws BufferOverflowException, BufferKeyAlreadyExistsException, BufferIOException {
         if (data.containsKey(key))
             throw new BufferKeyAlreadyExistsException();
         int length = getCountOfElements(o);
@@ -81,7 +82,7 @@ public class BufferEmulator<T> implements Buffer<T> {
     }
 
     @Override
-    public T restore(int key) throws BufferKeyNotFoundException, BufferIOException {
+    public T restore(Key key) throws BufferKeyNotFoundException, BufferIOException {
         T result = data.get(key);
         if (result == null)
             throw new BufferKeyNotFoundException(key);

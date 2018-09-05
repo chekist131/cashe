@@ -7,22 +7,23 @@ import com.anton.exceptions.BufferKeyAlreadyExistsException;
 import com.anton.exceptions.BufferKeyNotFoundException;
 import com.anton.exceptions.BufferOverflowException;
 
+import java.security.Key;
 import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Function;
 
-public class Cache<T> implements Bufferable<T> {
-    private DoubleBuffer<T> doubleBuffer;
-    private Buffer<T> externalBufferForDoubleBuffer;
-    private Buffer<T> internalBufferForDoubleBuffer;
-    private Map<Integer, Date> savingTime;
+public class Cache<T, Key extends Comparable<? super Key>> implements Bufferable<T, Key> {
+    private DoubleBuffer<T, Key> doubleBuffer;
+    private Buffer<T, Key> externalBufferForDoubleBuffer;
+    private Buffer<T, Key> internalBufferForDoubleBuffer;
+    private Map<Key, Date> savingTime;
 
     public Cache(
             int externalSize,
             int internalSize,
             String filename,
-            Function<Map<Integer, Date>, CacheStrategy<T>> cacheStrategyConstructor) throws BufferIOException {
+            Function<Map<Key, Date>, CacheStrategy<T, Key>> cacheStrategyConstructor) throws BufferIOException {
         this.savingTime = new TreeMap<>();
         this.externalBufferForDoubleBuffer = new ArrayBuffer<>(externalSize);
         this.internalBufferForDoubleBuffer = new FileBuffer<>(internalSize, filename);
@@ -47,11 +48,11 @@ public class Cache<T> implements Bufferable<T> {
     }
 
     @Override
-    public boolean isContainsKey(int key) {
+    public boolean isContainsKey(Key key) {
         return doubleBuffer.isContainsKey(key);
     }
 
-    public void save(int key, T value) throws BufferKeyAlreadyExistsException, BufferOverflowException, BufferIOException {
+    public void save(Key key, T value) throws BufferKeyAlreadyExistsException, BufferOverflowException, BufferIOException {
         savingTime.put(key, new Date());
         try{
             doubleBuffer.save(key, value);
@@ -61,7 +62,7 @@ public class Cache<T> implements Bufferable<T> {
         }
     }
 
-    public T restore(int key) throws BufferKeyNotFoundException, BufferIOException {
+    public T restore(Key key) throws BufferKeyNotFoundException, BufferIOException {
         Date time = savingTime.get(key);
         savingTime.remove(key);
         try{

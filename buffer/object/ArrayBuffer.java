@@ -1,6 +1,6 @@
 package com.anton.buffer.object;
 
-public class ArrayBuffer<T> extends ContinuousBuffer<T> {
+public class ArrayBuffer<T, Key extends Comparable<? super Key>> extends ContinuousBuffer<T, Key> {
     private byte[] data;
 
     public ArrayBuffer(int bufferSize) {

@@ -5,8 +5,8 @@ import com.anton.buffer.object.Buffer;
 import java.util.Map;
 import java.util.TreeMap;
 
-public abstract class IContinuousBuffer<T> implements Buffer<T> {
-    protected Map<Integer, Place> keysToStartAndLength;
+public abstract class IContinuousBuffer<T, Key extends Comparable<? super Key>> implements Buffer<T, Key> {
+    protected Map<Key, Place> keysToStartAndLength;
     protected int lastIndex;
 
     public IContinuousBuffer() {
@@ -20,7 +20,7 @@ public abstract class IContinuousBuffer<T> implements Buffer<T> {
     }
 
     @Override
-    public boolean isContainsKey(int key) {
+    public boolean isContainsKey(Key key) {
         return keysToStartAndLength.containsKey(key);
     }
 }

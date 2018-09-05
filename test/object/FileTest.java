@@ -15,8 +15,8 @@ public class FileTest extends ObjectTest {
             throws BufferOverflowException, BufferKeyAlreadyExistsException,
             BufferIOException, BufferKeyNotFoundException {
         try(
-                Buffer<String> extBuf = new FileBuffer<>(externalBufferSize, "bufferObj1");
-                Buffer<String> intBuf = new FileBuffer<>(internalBufferSize, "bufferObj2")
+                Buffer<String, Integer> extBuf = new FileBuffer<>(externalBufferSize, "bufferObj1");
+                Buffer<String, Integer> intBuf = new FileBuffer<>(internalBufferSize, "bufferObj2")
         ){
             super.saveAndRestore(extBuf, intBuf);
         }

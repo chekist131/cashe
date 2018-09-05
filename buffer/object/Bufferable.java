@@ -5,10 +5,10 @@ import com.anton.exceptions.BufferKeyAlreadyExistsException;
 import com.anton.exceptions.BufferKeyNotFoundException;
 import com.anton.exceptions.BufferOverflowException;
 
-public interface Bufferable<T> extends AutoCloseable{
-    void save(int key, T o) throws BufferOverflowException, BufferKeyAlreadyExistsException, BufferIOException;
+public interface Bufferable<T, Key extends Comparable<? super Key>> extends AutoCloseable{
+    void save(Key key, T o) throws BufferOverflowException, BufferKeyAlreadyExistsException, BufferIOException;
 
-    T restore(int key) throws BufferKeyNotFoundException, BufferIOException;
+    T restore(Key key) throws BufferKeyNotFoundException, BufferIOException;
 
-    boolean isContainsKey(int key);
+    boolean isContainsKey(Key key);
 }

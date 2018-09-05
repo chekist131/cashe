@@ -20,7 +20,7 @@ public class CacheText implements BufferableText {
     public CacheText(
             int externalSize,
             int internalSize,
-            Function<Map<Integer, Date>, CacheStrategy<String>> cacheStrategyConstructor) throws BufferIOException {
+            Function<Map<Integer, Date>, CacheStrategy<String, Integer>> cacheStrategyConstructor) throws BufferIOException {
         this.savingTime = new TreeMap<>();
         this.externalBufferForDoubleBuffer = new ArrayBufferText(externalSize);
         this.internalBufferForDoubleBuffer = new FileBufferText(internalSize, "l2buffer");
@@ -45,11 +45,11 @@ public class CacheText implements BufferableText {
     }
 
     @Override
-    public boolean isContainsKey(int key) {
+    public boolean isContainsKey(Integer key) {
         return doubleBufferText.isContainsKey(key);
     }
 
-    public void save(int key, String value) throws BufferKeyAlreadyExistsException, BufferOverflowException, BufferIOException {
+    public void save(Integer key, String value) throws BufferKeyAlreadyExistsException, BufferOverflowException, BufferIOException {
         savingTime.put(key, new Date());
         try{
             doubleBufferText.save(key, value);
@@ -59,7 +59,7 @@ public class CacheText implements BufferableText {
         }
     }
 
-    public String restore(int key) throws BufferKeyNotFoundException, BufferIOException {
+    public String restore(Integer key) throws BufferKeyNotFoundException, BufferIOException {
         Date time = savingTime.get(key);
         savingTime.remove(key);
         try{

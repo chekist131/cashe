@@ -10,16 +10,16 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class DoubleBuffer<T> implements Bufferable<T> {
+public class DoubleBuffer<T, Key extends Comparable<? super Key>> implements Bufferable<T, Key> {
 
-    private Buffer<T> externalBuffer;
-    private Buffer<T> internalBuffer;
-    private BufferComparator<T> comparator;
+    private Buffer<T, Key> externalBuffer;
+    private Buffer<T, Key> internalBuffer;
+    private BufferComparator<T, Key> comparator;
 
     public DoubleBuffer(
-            Buffer<T> externalBuffer,
-            Buffer<T> internalBuffer,
-            BufferComparator<T> comparator) {
+            Buffer<T, Key> externalBuffer,
+            Buffer<T, Key> internalBuffer,
+            BufferComparator<T, Key> comparator) {
         this.externalBuffer = externalBuffer;
         this.internalBuffer = internalBuffer;
         this.comparator = comparator;
@@ -34,16 +34,16 @@ public class DoubleBuffer<T> implements Bufferable<T> {
     }
 
     @Override
-    public boolean isContainsKey(int key) {
+    public boolean isContainsKey(Key key) {
         return externalBuffer.isContainsKey(key) || internalBuffer.isContainsKey(key);
     }
 
     @Override
-    public void save(int key, T o) throws BufferOverflowException, BufferKeyAlreadyExistsException, BufferIOException {
+    public void save(Key key, T o) throws BufferOverflowException, BufferKeyAlreadyExistsException, BufferIOException {
         try{
             externalBuffer.save(key, o);
         } catch (BufferOverflowException e){
-            Set<Map.Entry<Integer, T>> extraValues = externalBuffer.getExtraValues(key, o, comparator);
+            Set<Map.Entry<Key, T>> extraValues = externalBuffer.getExtraValues(key, o, comparator);
             try{
                 internalBuffer.saveSeveral(extraValues);
             } catch (BufferKeyAlreadyExistsException ignored){
@@ -66,10 +66,10 @@ public class DoubleBuffer<T> implements Bufferable<T> {
     }
 
     @Override
-    public T restore(int key) throws BufferKeyNotFoundException, BufferIOException {
+    public T restore(Key key) throws BufferKeyNotFoundException, BufferIOException {
         try{
             T value = externalBuffer.restore(key);
-            Set<Map.Entry<Integer, T>> valuableValues = internalBuffer.getValuableValues(externalBuffer.getFree(), comparator);
+            Set<Map.Entry<Key, T>> valuableValues = internalBuffer.getValuableValues(externalBuffer.getFree(), comparator);
             try{
                 externalBuffer.saveSeveral(valuableValues);
             } catch (BufferKeyAlreadyExistsException | BufferOverflowException ignored){

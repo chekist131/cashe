@@ -5,12 +5,13 @@ import com.anton.exceptions.BufferKeyAlreadyExistsException;
 import com.anton.exceptions.BufferKeyNotFoundException;
 import com.anton.exceptions.BufferOverflowException;
 import com.anton.buffer.object.strategies.BufferComparator;
+import javafx.scene.input.KeyCode;
 
 import java.io.*;
 import java.util.Map;
 import java.util.Set;
 
-public interface Buffer<T> extends Bufferable<T>{
+public interface Buffer<T, Key extends Comparable<? super Key>> extends Bufferable<T, Key>{
     int getSize();
 
     int getUsed();
@@ -19,24 +20,24 @@ public interface Buffer<T> extends Bufferable<T>{
         return getSize() - getUsed();
     }
 
-    default void saveSeveral(Set<Map.Entry<Integer, T>> values)
+    default void saveSeveral(Set<Map.Entry<Key, T>> values)
             throws BufferOverflowException, BufferKeyAlreadyExistsException, BufferIOException {
         int bytes = 0;
-        for(Map.Entry<Integer, T> entry: values) {
+        for(Map.Entry<Key, T> entry: values) {
             bytes += getCountOfElements(entry.getValue());
         }
         if (getFree() < bytes)
             throw new BufferOverflowException(getFree(), bytes);
         if (values.stream().map(Map.Entry::getKey).anyMatch(this::isContainsKey))
             throw new BufferKeyAlreadyExistsException();
-        for(Map.Entry<Integer, T> entry: values)
+        for(Map.Entry<Key, T> entry: values)
             save(entry.getKey(), entry.getValue());
     }
 
-    default void ejectSeveral(Set<Integer> keys) throws BufferKeyNotFoundException, BufferIOException {
+    default void ejectSeveral(Set<Key> keys) throws BufferKeyNotFoundException, BufferIOException {
         if (!keys.stream().allMatch(this::isContainsKey))
             throw  new BufferKeyNotFoundException();
-        for(int key: keys)
+        for(Key key: keys)
             restore(key);
     }
 
@@ -48,7 +49,7 @@ public interface Buffer<T> extends Bufferable<T>{
      * @return extra values
      * @throws BufferIOException
      */
-    Set<Map.Entry<Integer, T>> getExtraValues(int key, T value, BufferComparator<T> comparator) throws BufferIOException;
+    Set<Map.Entry<Key, T>> getExtraValues(Key key, T value, BufferComparator<T, Key> comparator) throws BufferIOException;
 
     /**
      * Find most valuable elements to free freeBytes or less count of bytes
@@ -57,7 +58,7 @@ public interface Buffer<T> extends Bufferable<T>{
      * @return valuable values
      * @throws BufferIOException
      */
-    Set<Map.Entry<Integer, T>> getValuableValues(int freeBytes, BufferComparator<T> comparator) throws BufferIOException;
+    Set<Map.Entry<Key, T>> getValuableValues(int freeBytes, BufferComparator<T, Key> comparator) throws BufferIOException;
 
     @Override
     void close();

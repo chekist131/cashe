@@ -16,7 +16,7 @@ abstract class TextTest {
 
     static int externalBufferSize = 5;
     static int internalBufferSize = 10;
-    private static BufferComparator<String> comparator = new DefaultBufferComparator();
+    private static BufferComparator<String, Integer> comparator = new DefaultBufferComparator();
 
     public abstract void saveAndRestore()
             throws BufferOverflowException, BufferKeyAlreadyExistsException,

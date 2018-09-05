@@ -16,8 +16,8 @@ public class EmulatorTest extends ObjectTest {
             throws BufferOverflowException, BufferKeyAlreadyExistsException,
             BufferIOException, BufferKeyNotFoundException {
         try(
-                Buffer<String> extBuf = new BufferEmulator<>(externalBufferSize);
-                Buffer<String> intBuf = new BufferEmulator<>(internalBufferSize)
+                Buffer<String, Integer> extBuf = new BufferEmulator<>(externalBufferSize);
+                Buffer<String, Integer> intBuf = new BufferEmulator<>(internalBufferSize)
         ){
             super.saveAndRestore(extBuf, intBuf);
         }

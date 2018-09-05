@@ -2,7 +2,7 @@ package com.anton.buffer.text;
 
 import com.anton.buffer.object.Buffer;
 
-public interface BufferText extends Buffer<String>, BufferableText{
+public interface BufferText extends Buffer<String, Integer>, BufferableText{
 
     default int getCountOfElements(String o) {
         return o.getBytes().length;

@@ -10,7 +10,8 @@ import static org.junit.Assert.assertEquals;
 public class CacheTest {
     @Test
     public void saveAndRestore() throws Exception {
-        try(Cache<String> cache = new Cache<>(15, 20, "l2buffer", LeastRecentlyUsed::new)){
+        try(Cache<String, Integer> cache =
+                    new Cache<String, Integer>(15, 20, "l2buffer", LeastRecentlyUsed::new)){
             cache.save(5, "Anton");
             assertEquals(12, cache.getExternalBufferUsed());
             assertEquals(0, cache.getInternalBufferUsed());
@@ -25,7 +26,8 @@ public class CacheTest {
             assertEquals(11, cache.getExternalBufferUsed());
             assertEquals(0, cache.getInternalBufferUsed());
         }
-        try(Cache<String> cache = new Cache<>(15, 20, "l2buffer", MostRecentlyUsed::new)){
+        try(Cache<String,Integer> cache =
+                    new Cache<String, Integer>(15, 20, "l2buffer", MostRecentlyUsed::new)){
             cache.save(5, "Anton");
             assertEquals(12, cache.getExternalBufferUsed());
             assertEquals(0, cache.getInternalBufferUsed());

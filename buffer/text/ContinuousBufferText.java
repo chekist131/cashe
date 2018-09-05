@@ -10,9 +10,9 @@ import com.anton.buffer.object.strategies.BufferComparator;
 
 import java.util.*;
 
-public abstract class ContinuousBufferText extends IContinuousBuffer<String> implements BufferText {
+public abstract class ContinuousBufferText extends IContinuousBuffer<String, Integer> implements BufferText {
     @Override
-    public Set<Map.Entry<Integer, String>> getExtraValues(int key, String value, BufferComparator<String> comparator)
+    public Set<Map.Entry<Integer, String>> getExtraValues(Integer key, String value, BufferComparator<String,Integer> comparator)
             throws BufferIOException {
         char[] data = fetch();
         SortedSet<Map.Entry<Integer, String>> allData = new TreeSet<>(comparator.reversed());
@@ -38,7 +38,7 @@ public abstract class ContinuousBufferText extends IContinuousBuffer<String> imp
     }
 
     @Override
-    public Set<Map.Entry<Integer, String>> getValuableValues(int freeBytes, BufferComparator<String> comparator)
+    public Set<Map.Entry<Integer, String>> getValuableValues(int freeBytes, BufferComparator<String, Integer> comparator)
             throws BufferIOException {
         char[] data = fetch();
         SortedSet<Map.Entry<Integer, String>> allData = new TreeSet<>(comparator);
@@ -62,7 +62,7 @@ public abstract class ContinuousBufferText extends IContinuousBuffer<String> imp
     }
 
     @Override
-    public void save(int key, String o)
+    public void save(Integer key, String o)
             throws BufferOverflowException, BufferKeyAlreadyExistsException, BufferIOException {
         if (keysToStartAndLength.containsKey(key))
             throw new BufferKeyAlreadyExistsException();
@@ -78,7 +78,7 @@ public abstract class ContinuousBufferText extends IContinuousBuffer<String> imp
     }
 
     @Override
-    public String restore(int key) throws BufferKeyNotFoundException, BufferIOException {
+    public String restore(Integer key) throws BufferKeyNotFoundException, BufferIOException {
         if (!keysToStartAndLength.containsKey(key))
             throw new BufferKeyNotFoundException(key);
         Place startAndLengthValue = keysToStartAndLength.get(key);

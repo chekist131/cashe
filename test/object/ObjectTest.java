@@ -15,21 +15,21 @@ import static org.junit.Assert.assertNotEquals;
 public abstract class ObjectTest {
     static int externalBufferSize = 45;
     static int internalBufferSize = 10;
-    private static BufferComparator<String> comparator = new DefaultBufferComparator();
+    private static BufferComparator<String, Integer> comparator = new DefaultBufferComparator();
 
     public abstract void saveAndRestore()
             throws BufferOverflowException, BufferKeyAlreadyExistsException,
             BufferIOException, BufferKeyNotFoundException;
 
     void saveAndRestore(
-            Buffer<String> externalBuffer,
-            Buffer<String> internalBuffer)
+            Buffer<String, Integer> externalBuffer,
+            Buffer<String, Integer> internalBuffer)
             throws
             BufferOverflowException,
             BufferKeyAlreadyExistsException,
             BufferIOException,
             BufferKeyNotFoundException {
-        DoubleBuffer<String> doubleBuffer = new DoubleBuffer<>(externalBuffer, internalBuffer, comparator);
+        DoubleBuffer<String, Integer> doubleBuffer = new DoubleBuffer<>(externalBuffer, internalBuffer, comparator);
 
         doubleBuffer.save(1, "Igor");
         assertEquals(11, doubleBuffer.getExternalBufferUsed());
