@@ -1,11 +1,11 @@
 package com.anton.buffer;
 
-import com.anton.buffer.object.AbstractBufferObject;
+import com.anton.buffer.object.Buffer;
 
 import java.util.Map;
 import java.util.TreeMap;
 
-public abstract class IContinuousBuffer<T> implements AbstractBufferObject<T> {
+public abstract class IContinuousBuffer<T> implements Buffer<T> {
     protected Map<Integer, Place> keysToStartAndLength;
     protected int lastIndex;
 

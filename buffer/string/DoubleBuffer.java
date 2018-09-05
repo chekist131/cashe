@@ -1,13 +1,11 @@
 package com.anton.buffer.string;
 
-import com.anton.buffer.object.AbstractBufferObject;
-import com.anton.buffer.object.DoubleBufferObject;
 import com.anton.strateges.BufferComparator;
 
-public class DoubleBuffer extends DoubleBufferObject<String> implements Bufferable {
+public class DoubleBuffer extends com.anton.buffer.object.DoubleBuffer<String> implements BufferableText {
     public DoubleBuffer(
-            AbstractBuffer externalBuffer,
-            AbstractBuffer internalBuffer,
+            BufferText externalBuffer,
+            BufferText internalBuffer,
             BufferComparator<String> comparator) {
         super(externalBuffer, internalBuffer, comparator);
     }

@@ -1,10 +1,10 @@
 package com.anton.buffer.string;
 
-public class ArrayBuffer extends ContinuousBuffer {
+public class ArrayBufferText extends ContinuousBufferText {
 
     private char[] data;
 
-    public ArrayBuffer(int bufferSize) {
+    public ArrayBufferText(int bufferSize) {
         data = new char[bufferSize];
     }
 

@@ -1,11 +1,9 @@
 package com.anton.buffer.object;
 
-import com.anton.exceptions.BufferIOException;
-
-public class ArrayBufferObject<T> extends ContinuousBufferObject<T> {
+public class ArrayBuffer<T> extends ContinuousBuffer<T> {
     private byte[] data;
 
-    public ArrayBufferObject(int bufferSize) {
+    public ArrayBuffer(int bufferSize) {
         data = new byte[bufferSize];
     }
 

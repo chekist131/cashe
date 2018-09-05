@@ -5,7 +5,7 @@ import com.anton.exceptions.BufferKeyAlreadyExistsException;
 import com.anton.exceptions.BufferKeyNotFoundException;
 import com.anton.exceptions.BufferOverflowException;
 
-public interface BufferableObject<T> {
+public interface Bufferable<T> extends AutoCloseable{
     void save(int key, T o) throws BufferOverflowException, BufferKeyAlreadyExistsException, BufferIOException;
 
     T restore(int key) throws BufferKeyNotFoundException, BufferIOException;

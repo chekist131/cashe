@@ -4,16 +4,16 @@ import com.anton.exceptions.BufferIOException;
 import com.anton.exceptions.BufferKeyAlreadyExistsException;
 import com.anton.exceptions.BufferKeyNotFoundException;
 import com.anton.exceptions.BufferOverflowException;
-import com.anton.buffer.string.AbstractBuffer;
-import com.anton.buffer.string.BufferEmulator;
+import com.anton.buffer.string.BufferText;
+import com.anton.buffer.string.BufferEmulatorText;
 import org.junit.Test;
 
-public class BufferEmulatorDoubleBufferTest extends DoubleBufferTest {
+public class EmulatorTextTest extends TextTest {
     @Test
     public void saveAndRestore() throws BufferKeyAlreadyExistsException, BufferIOException, BufferKeyNotFoundException, BufferOverflowException {
         try(
-                AbstractBuffer extBuf = new BufferEmulator(externalBufferSize);
-                AbstractBuffer intBuf = new BufferEmulator(internalBufferSize)
+                BufferText extBuf = new BufferEmulatorText(externalBufferSize);
+                BufferText intBuf = new BufferEmulatorText(internalBufferSize)
         ){
             super.saveAndRestore(extBuf, intBuf);
         }

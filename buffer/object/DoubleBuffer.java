@@ -10,15 +10,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class DoubleBufferObject<T> implements BufferableObject<T> {
+public class DoubleBuffer<T> implements Bufferable<T> {
 
-    private AbstractBufferObject<T> externalBuffer;
-    private AbstractBufferObject<T> internalBuffer;
+    private Buffer<T> externalBuffer;
+    private Buffer<T> internalBuffer;
     private BufferComparator<T> comparator;
 
-    public DoubleBufferObject(
-            AbstractBufferObject<T> externalBuffer,
-            AbstractBufferObject<T> internalBuffer,
+    public DoubleBuffer(
+            Buffer<T> externalBuffer,
+            Buffer<T> internalBuffer,
             BufferComparator<T> comparator) {
         this.externalBuffer = externalBuffer;
         this.internalBuffer = internalBuffer;
@@ -84,6 +84,11 @@ public class DoubleBufferObject<T> implements BufferableObject<T> {
         } catch (BufferKeyNotFoundException e){
             return internalBuffer.restore(key);
         }
+
+    }
+
+    @Override
+    public void close(){
 
     }
 }

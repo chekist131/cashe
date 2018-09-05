@@ -7,11 +7,10 @@ import com.anton.exceptions.BufferKeyAlreadyExistsException;
 import com.anton.exceptions.BufferKeyNotFoundException;
 import com.anton.exceptions.BufferOverflowException;
 import com.anton.strateges.BufferComparator;
-import com.anton.buffer.string.AbstractBuffer;
 
 import java.util.*;
 
-public abstract class ContinuousBuffer extends IContinuousBuffer<String> implements AbstractBuffer {
+public abstract class ContinuousBufferText extends IContinuousBuffer<String> implements BufferText {
     @Override
     public Set<Map.Entry<Integer, String>> getExtraValues(int key, String value, BufferComparator<String> comparator) throws BufferIOException {
         char[] data = fetch();

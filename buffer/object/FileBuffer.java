@@ -1,10 +1,10 @@
-package com.anton.buffer.string;
+package com.anton.buffer.object;
 
 import com.anton.exceptions.BufferIOException;
 
 import java.io.*;
 
-public class FileBuffer extends ContinuousBuffer {
+public class FileBuffer<T> extends ContinuousBuffer<T> {
 
     private String fileName;
     private int size;
@@ -21,15 +21,10 @@ public class FileBuffer extends ContinuousBuffer {
     }
 
     @Override
-    public int getSize(){
-        return size;
-    }
-
-    @Override
-    protected char[] fetch() throws BufferIOException {
-        char[] data = new char[size];
-        try(Reader reader = new FileReader(fileName)){
-            reader.read(data);
+    byte[] fetch() throws BufferIOException {
+        byte[] data = new byte[size];
+        try(InputStream inputStream = new FileInputStream(fileName)){
+            inputStream.read(data);
         } catch (IOException e) {
             throw new BufferIOException(e);
         }
@@ -37,16 +32,21 @@ public class FileBuffer extends ContinuousBuffer {
     }
 
     @Override
-    protected void stash(char[] data) throws BufferIOException {
-        try(Writer writer = new FileWriter(fileName)){
-            writer.write(data);
+    void stash(byte[] data) throws BufferIOException {
+        try(OutputStream fileOutputStream = new FileOutputStream(fileName)){
+            fileOutputStream.write(data);
         } catch (IOException e) {
             throw new BufferIOException(e);
         }
     }
 
     @Override
-    public void close(){
+    public int getSize() {
+        return size;
+    }
+
+    @Override
+    public void close() {
         File f = new File(fileName);
         f.delete();
     }

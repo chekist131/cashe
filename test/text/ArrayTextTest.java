@@ -1,21 +1,21 @@
 package com.anton.test.text;
 
-import com.anton.buffer.string.ArrayBuffer;
+import com.anton.buffer.string.ArrayBufferText;
 import com.anton.exceptions.BufferIOException;
 import com.anton.exceptions.BufferKeyAlreadyExistsException;
 import com.anton.exceptions.BufferKeyNotFoundException;
 import com.anton.exceptions.BufferOverflowException;
-import com.anton.buffer.string.AbstractBuffer;
+import com.anton.buffer.string.BufferText;
 import org.junit.Test;
 
-public class ArrayDoubleBufferTest extends DoubleBufferTest {
+public class ArrayTextTest extends TextTest {
     @Test
     public void saveAndRestore()
             throws BufferKeyAlreadyExistsException, BufferIOException,
             BufferKeyNotFoundException, BufferOverflowException {
         try(
-                AbstractBuffer extBuf = new ArrayBuffer(externalBufferSize);
-                AbstractBuffer intBuf = new ArrayBuffer(internalBufferSize)
+                BufferText extBuf = new ArrayBufferText(externalBufferSize);
+                BufferText intBuf = new ArrayBufferText(internalBufferSize)
         ){
             super.saveAndRestore(extBuf, intBuf);
         }

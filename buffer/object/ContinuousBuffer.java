@@ -10,7 +10,7 @@ import com.anton.strateges.BufferComparator;
 
 import java.util.*;
 
-public abstract class ContinuousBufferObject<T> extends IContinuousBuffer<T> {
+public abstract class ContinuousBuffer<T> extends IContinuousBuffer<T> {
     @Override
     public Set<Map.Entry<Integer, T>> getExtraValues(int key, T value, BufferComparator<T> comparator) throws BufferIOException {
         byte[] data = fetch();

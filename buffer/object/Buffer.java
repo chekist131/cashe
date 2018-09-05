@@ -9,8 +9,10 @@ import com.anton.strateges.BufferComparator;
 import java.io.*;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
-public interface AbstractBufferObject<T> extends BufferableObject<T>, AutoCloseable {
+public interface Buffer<T> extends Bufferable<T>{
     int getSize();
 
     int getUsed();
@@ -21,7 +23,11 @@ public interface AbstractBufferObject<T> extends BufferableObject<T>, AutoClosea
 
     default void saveSeveral(Set<Map.Entry<Integer, T>> values)
             throws BufferOverflowException, BufferKeyAlreadyExistsException, BufferIOException {
-        int bytes = values.stream().map(entry -> getCountOfElements(entry.getValue())).reduce(0, (a, b) -> a + b);
+        //int bytes = values.stream().map(entry -> entry.getValue()).map(elem -> getCountOfElements(elem)).reduce(0, (a, b) -> a + b);
+        int bytes = 0;
+        for(Map.Entry<Integer, T> entry: values) {
+            bytes += getCountOfElements(entry.getValue());
+        }
         if (getFree() < bytes)
             throw new BufferOverflowException(getFree(), bytes);
         if (values.stream().map(Map.Entry::getKey).anyMatch(this::isContainsKey))
@@ -37,22 +43,28 @@ public interface AbstractBufferObject<T> extends BufferableObject<T>, AutoClosea
 
     /**
      * Return less valuable elements from (buffer + new element)
+     * @param key adding key
+     * @param value adding value
+     * @param comparator compare strategy
      * @return extra values
+     * @throws BufferIOException
      */
     Set<Map.Entry<Integer, T>> getExtraValues(int key, T value, BufferComparator<T> comparator) throws BufferIOException;
 
     /**
      * Find most valuable elements to free freeBytes or less count of bytes
      * @param freeBytes maximum count of bytes of valuable values
+     * @param comparator compare strategy
      * @return valuable values
+     * @throws BufferIOException
      */
     Set<Map.Entry<Integer, T>> getValuableValues(int freeBytes, BufferComparator<T> comparator) throws BufferIOException;
 
     @Override
     void close();
 
-    default int getCountOfElements(T o){
-        int length = -100;
+    default int getCountOfElements(T o) throws BufferIOException {
+        int length;
         try {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             ObjectOutput objectOutput = new ObjectOutputStream(byteArrayOutputStream);
@@ -62,14 +74,13 @@ public interface AbstractBufferObject<T> extends BufferableObject<T>, AutoClosea
             objectOutput.close();
             byteArrayOutputStream.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new BufferIOException(e);
         }
-
         return length;
     }
 
-    default Object getElements(T o){
-        byte[] array = null;
+    default Object getElements(T o) throws BufferIOException {
+        byte[] array;
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         try{
             ObjectOutput objectOutput = new ObjectOutputStream(byteArrayOutputStream);
@@ -79,21 +90,22 @@ public interface AbstractBufferObject<T> extends BufferableObject<T>, AutoClosea
             objectOutput.close();
             byteArrayOutputStream.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new BufferIOException(e);
         }
         return array;
     }
 
-    default T getObjectFromBytes(Object bytes){
+    default T getObjectFromBytes(Object bytes) throws BufferIOException {
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream((byte[])bytes);
-        T object = null;
+        T object;
         try{
             ObjectInput objectInput = new ObjectInputStream(byteArrayInputStream);
-            object = (T)objectInput.readObject();
+            Object o = objectInput.readObject();
+            object = (T)o;
             objectInput.close();
             byteArrayInputStream.close();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch (IOException | ClassNotFoundException | ClassCastException e) {
+            throw new BufferIOException(e);
         }
         return object;
     }

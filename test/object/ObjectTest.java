@@ -1,7 +1,7 @@
 package com.anton.test.object;
 
-import com.anton.buffer.object.AbstractBufferObject;
-import com.anton.buffer.object.DoubleBufferObject;
+import com.anton.buffer.object.Buffer;
+import com.anton.buffer.object.DoubleBuffer;
 import com.anton.exceptions.BufferIOException;
 import com.anton.exceptions.BufferKeyAlreadyExistsException;
 import com.anton.exceptions.BufferKeyNotFoundException;
@@ -12,7 +12,7 @@ import com.anton.strateges.DefaultBufferComparator;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-public abstract class DoubleBufferObjectTest {
+public abstract class ObjectTest {
     static int externalBufferSize = 45;
     static int internalBufferSize = 10;
     private static BufferComparator<String> comparator = new DefaultBufferComparator();
@@ -22,14 +22,14 @@ public abstract class DoubleBufferObjectTest {
             BufferIOException, BufferKeyNotFoundException;
 
     void saveAndRestore(
-            AbstractBufferObject<String> externalBuffer,
-            AbstractBufferObject<String> internalBuffer)
+            Buffer<String> externalBuffer,
+            Buffer<String> internalBuffer)
             throws
             BufferOverflowException,
             BufferKeyAlreadyExistsException,
             BufferIOException,
             BufferKeyNotFoundException {
-        DoubleBufferObject<String> doubleBuffer = new DoubleBufferObject<>(externalBuffer, internalBuffer, comparator);
+        DoubleBuffer<String> doubleBuffer = new DoubleBuffer<>(externalBuffer, internalBuffer, comparator);
 
         doubleBuffer.save(1, "Igor");
         assertEquals(11, doubleBuffer.getExternalBufferUsed());
