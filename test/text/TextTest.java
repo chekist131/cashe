@@ -1,7 +1,7 @@
 package com.anton.test.text;
 
-import com.anton.buffer.string.BufferText;
-import com.anton.buffer.string.DoubleBuffer;
+import com.anton.buffer.text.BufferText;
+import com.anton.buffer.text.DoubleBufferText;
 import com.anton.exceptions.BufferIOException;
 import com.anton.exceptions.BufferKeyAlreadyExistsException;
 import com.anton.exceptions.BufferKeyNotFoundException;
@@ -30,7 +30,7 @@ abstract class TextTest {
             BufferKeyAlreadyExistsException,
             BufferIOException,
             BufferKeyNotFoundException {
-        DoubleBuffer doubleBuffer = new DoubleBuffer(externalBuffer, internalBuffer, comparator);
+        DoubleBufferText doubleBuffer = new DoubleBufferText(externalBuffer, internalBuffer, comparator);
 
         doubleBuffer.save(1, "Igor");
         assertEquals(4, doubleBuffer.getExternalBufferUsed());

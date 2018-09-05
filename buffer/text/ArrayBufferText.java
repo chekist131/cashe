@@ -1,4 +1,4 @@
-package com.anton.buffer.string;
+package com.anton.buffer.text;
 
 public class ArrayBufferText extends ContinuousBufferText {
 

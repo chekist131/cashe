@@ -23,7 +23,6 @@ public interface Buffer<T> extends Bufferable<T>{
 
     default void saveSeveral(Set<Map.Entry<Integer, T>> values)
             throws BufferOverflowException, BufferKeyAlreadyExistsException, BufferIOException {
-        //int bytes = values.stream().map(entry -> entry.getValue()).map(elem -> getCountOfElements(elem)).reduce(0, (a, b) -> a + b);
         int bytes = 0;
         for(Map.Entry<Integer, T> entry: values) {
             bytes += getCountOfElements(entry.getValue());
@@ -37,6 +36,8 @@ public interface Buffer<T> extends Bufferable<T>{
     }
 
     default void ejectSeveral(Set<Integer> keys) throws BufferKeyNotFoundException, BufferIOException {
+        if (!keys.stream().allMatch(this::isContainsKey))
+            throw  new BufferKeyNotFoundException();
         for(int key: keys)
             restore(key);
     }

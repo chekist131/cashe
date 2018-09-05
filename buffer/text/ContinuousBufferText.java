@@ -1,4 +1,4 @@
-package com.anton.buffer.string;
+package com.anton.buffer.text;
 
 import com.anton.buffer.IContinuousBuffer;
 import com.anton.buffer.Place;
@@ -12,12 +12,17 @@ import java.util.*;
 
 public abstract class ContinuousBufferText extends IContinuousBuffer<String> implements BufferText {
     @Override
-    public Set<Map.Entry<Integer, String>> getExtraValues(int key, String value, BufferComparator<String> comparator) throws BufferIOException {
+    public Set<Map.Entry<Integer, String>> getExtraValues(int key, String value, BufferComparator<String> comparator)
+            throws BufferIOException {
         char[] data = fetch();
         SortedSet<Map.Entry<Integer, String>> allData = new TreeSet<>(comparator.reversed());
         for(Map.Entry<Integer, Place> keyToStartAndLength: keysToStartAndLength.entrySet()){
-            allData.add(new AbstractMap.SimpleImmutableEntry<>(keyToStartAndLength.getKey(),
-                    new String(data, keyToStartAndLength.getValue().getStart(), keyToStartAndLength.getValue().getLength())));
+            allData.add(
+                    new AbstractMap.SimpleImmutableEntry<>(keyToStartAndLength.getKey(),
+                    new String(
+                            data,
+                            keyToStartAndLength.getValue().getStart(),
+                            keyToStartAndLength.getValue().getLength())));
         }
         allData.add(new AbstractMap.SimpleImmutableEntry<>(key, value));
         Set<Map.Entry<Integer, String>> extra = new TreeSet<>(Comparator.comparing(Map.Entry::getKey));
@@ -33,12 +38,17 @@ public abstract class ContinuousBufferText extends IContinuousBuffer<String> imp
     }
 
     @Override
-    public Set<Map.Entry<Integer, String>> getValuableValues(int freeBytes, BufferComparator<String> comparator) throws BufferIOException {
+    public Set<Map.Entry<Integer, String>> getValuableValues(int freeBytes, BufferComparator<String> comparator)
+            throws BufferIOException {
         char[] data = fetch();
         SortedSet<Map.Entry<Integer, String>> allData = new TreeSet<>(comparator);
         for(Map.Entry<Integer, Place> keyToStartAndLength: keysToStartAndLength.entrySet()){
-            allData.add(new AbstractMap.SimpleImmutableEntry<>(keyToStartAndLength.getKey(),
-                    new String(data, keyToStartAndLength.getValue().getStart(), keyToStartAndLength.getValue().getLength())));
+            allData.add(
+                    new AbstractMap.SimpleImmutableEntry<>(keyToStartAndLength.getKey(),
+                    new String(
+                            data,
+                            keyToStartAndLength.getValue().getStart(),
+                            keyToStartAndLength.getValue().getLength())));
         }
         Set<Map.Entry<Integer, String>> extra = new TreeSet<>(Comparator.comparing(Map.Entry::getKey));
         int byteCounter = 0;
@@ -52,7 +62,8 @@ public abstract class ContinuousBufferText extends IContinuousBuffer<String> imp
     }
 
     @Override
-    public void save(int key, String o) throws BufferOverflowException, BufferKeyAlreadyExistsException, BufferIOException {
+    public void save(int key, String o)
+            throws BufferOverflowException, BufferKeyAlreadyExistsException, BufferIOException {
         if (keysToStartAndLength.containsKey(key))
             throw new BufferKeyAlreadyExistsException();
         if (getFree() < o.length())

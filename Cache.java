@@ -1,7 +1,7 @@
 package com.anton;
 
 import com.anton.buffer.object.DoubleBuffer;
-import com.anton.buffer.string.*;
+import com.anton.buffer.text.*;
 import com.anton.exceptions.BufferIOException;
 import com.anton.exceptions.BufferKeyAlreadyExistsException;
 import com.anton.exceptions.BufferKeyNotFoundException;

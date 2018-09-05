@@ -1,4 +1,4 @@
-package com.anton.buffer.string;
+package com.anton.buffer.text;
 
 import com.anton.buffer.object.Bufferable;
 

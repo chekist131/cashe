@@ -12,7 +12,8 @@ import java.util.*;
 
 public abstract class ContinuousBuffer<T> extends IContinuousBuffer<T> {
     @Override
-    public Set<Map.Entry<Integer, T>> getExtraValues(int key, T value, BufferComparator<T> comparator) throws BufferIOException {
+    public Set<Map.Entry<Integer, T>> getExtraValues(int key, T value, BufferComparator<T> comparator)
+            throws BufferIOException {
         byte[] data = fetch();
         SortedSet<Map.Entry<Integer, T>> allData = new TreeSet<>(comparator.reversed());
         for(Map.Entry<Integer, Place> keyToStartAndLength: keysToStartAndLength.entrySet()){
@@ -29,7 +30,9 @@ public abstract class ContinuousBuffer<T> extends IContinuousBuffer<T> {
         int byteCounter = 0;
         for(Map.Entry<Integer, T> e: allData){
             extra.add(e);
-            byteCounter += e.getKey() == key ? getCountOfElements(value) : keysToStartAndLength.get(e.getKey()).getLength();
+            byteCounter += e.getKey() == key ?
+                    getCountOfElements(value) :
+                    keysToStartAndLength.get(e.getKey()).getLength();
             if (byteCounter >= necessaryBytes)
                 break;
         }
@@ -37,7 +40,8 @@ public abstract class ContinuousBuffer<T> extends IContinuousBuffer<T> {
     }
 
     @Override
-    public Set<Map.Entry<Integer, T>> getValuableValues(int freeBytes, BufferComparator<T> comparator) throws BufferIOException {
+    public Set<Map.Entry<Integer, T>> getValuableValues(int freeBytes, BufferComparator<T> comparator)
+            throws BufferIOException {
         byte[] data = fetch();
         SortedSet<Map.Entry<Integer, T>> allData = new TreeSet<>(comparator);
         for(Map.Entry<Integer, Place> keyToStartAndLength: keysToStartAndLength.entrySet()){
@@ -81,8 +85,10 @@ public abstract class ContinuousBuffer<T> extends IContinuousBuffer<T> {
         Place startAndLengthValue = keysToStartAndLength.get(key);
         byte[] data = fetch();
         T result = getObjectFromBytes(
-                Arrays.copyOfRange(data,
-                        startAndLengthValue.getStart(), startAndLengthValue.getLength() + startAndLengthValue.getStart()));
+                Arrays.copyOfRange(
+                        data,
+                        startAndLengthValue.getStart(),
+                        startAndLengthValue.getLength() + startAndLengthValue.getStart()));
         for (int i = startAndLengthValue.getStart(); i < startAndLengthValue.getStart() + startAndLengthValue.getLength(); i++)
             data[i] = (byte) -1;
         for (int i = startAndLengthValue.getStart() + startAndLengthValue.getLength(); i < lastIndex; i++)
