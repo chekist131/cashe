@@ -7,13 +7,14 @@ import com.anton.exceptions.BufferKeyAlreadyExistsException;
 import com.anton.exceptions.BufferKeyNotFoundException;
 import com.anton.exceptions.BufferOverflowException;
 
+import java.io.Serializable;
 import java.security.Key;
 import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Function;
 
-public class Cache<T, Key extends Comparable<? super Key>> implements Bufferable<T, Key> {
+public class Cache<T extends Serializable, Key extends Comparable<? super Key>> implements Bufferable<T, Key> {
     private DoubleBuffer<T, Key> doubleBuffer;
     private Buffer<T, Key> externalBufferForDoubleBuffer;
     private Buffer<T, Key> internalBufferForDoubleBuffer;

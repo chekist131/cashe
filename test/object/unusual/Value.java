@@ -1,6 +1,8 @@
 package com.anton.test.object.unusual;
 
-public class Value {
+import java.io.Serializable;
+
+public class Value implements Serializable {
 
     private String s;
 

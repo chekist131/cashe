@@ -6,11 +6,12 @@ import com.anton.exceptions.BufferKeyNotFoundException;
 import com.anton.exceptions.BufferOverflowException;
 import com.anton.buffer.object.strategies.BufferComparator;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class DoubleBuffer<T, Key extends Comparable<? super Key>> implements Bufferable<T, Key> {
+public class DoubleBuffer<T extends Serializable, Key extends Comparable<? super Key>> implements Bufferable<T, Key> {
 
     private Buffer<T, Key> externalBuffer;
     private Buffer<T, Key> internalBuffer;

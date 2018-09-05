@@ -6,11 +6,12 @@ import com.anton.exceptions.BufferKeyNotFoundException;
 import com.anton.exceptions.BufferOverflowException;
 import com.anton.buffer.object.strategies.BufferComparator;
 
+import java.io.Serializable;
 import java.security.Key;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class BufferEmulator<T, Key extends Comparable<? super Key>> implements Buffer<T, Key> {
+public class BufferEmulator<T extends Serializable, Key extends Comparable<? super Key>> implements Buffer<T, Key> {
     private Map<Key, T> data;
 
     private int size;

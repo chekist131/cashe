@@ -8,10 +8,11 @@ import com.anton.exceptions.BufferKeyNotFoundException;
 import com.anton.exceptions.BufferOverflowException;
 import com.anton.buffer.object.strategies.BufferComparator;
 
+import java.io.Serializable;
 import java.security.Key;
 import java.util.*;
 
-public abstract class ContinuousBuffer<T, Key extends Comparable<? super Key>> extends IContinuousBuffer<T, Key> {
+public abstract class ContinuousBuffer<T extends Serializable, Key extends Comparable<? super Key>> extends IContinuousBuffer<T, Key> {
     @Override
     public Set<Map.Entry<Key, T>> getExtraValues(Key key, T value, BufferComparator<T, Key> comparator)
             throws BufferIOException {

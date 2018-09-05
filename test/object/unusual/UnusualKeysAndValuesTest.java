@@ -13,7 +13,9 @@ import static org.junit.Assert.assertEquals;
 public class UnusualKeysAndValuesTest {
 
     @Test
-    public void init() throws BufferIOException, BufferKeyAlreadyExistsException, BufferOverflowException, BufferKeyNotFoundException {
+    public void init()
+            throws BufferIOException, BufferKeyAlreadyExistsException,
+            BufferOverflowException, BufferKeyNotFoundException {
         try(Buffer<Value, KeyGen2> buffer = new BufferEmulator<>(100)){
             Value value1 = new Value("Anton");
             KeyGen2 key1 = new KeyGen2(5);

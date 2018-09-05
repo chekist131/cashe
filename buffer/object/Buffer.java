@@ -11,7 +11,7 @@ import java.io.*;
 import java.util.Map;
 import java.util.Set;
 
-public interface Buffer<T, Key extends Comparable<? super Key>> extends Bufferable<T, Key>{
+public interface Buffer<T extends Serializable, Key extends Comparable<? super Key>> extends Bufferable<T, Key>{
     int getSize();
 
     int getUsed();
