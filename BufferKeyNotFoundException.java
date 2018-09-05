@@ -1,5 +1,8 @@
 package com.anton;
 
+/**
+ * Value with the requested key not exists in the buffer
+ */
 public class BufferKeyNotFoundException extends BufferException {
 
     public BufferKeyNotFoundException(Object key) {

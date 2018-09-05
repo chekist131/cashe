@@ -1,5 +1,8 @@
 package com.anton;
 
+/**
+ * The buffer in overloaded
+ */
 public class BufferOverflowException extends BufferException {
 
     private int bytesRemain;

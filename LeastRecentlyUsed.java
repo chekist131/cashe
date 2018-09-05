@@ -3,6 +3,9 @@ package com.anton;
 import java.util.Date;
 import java.util.Map;
 
+/**
+ * The value with more recent time of usage is faster ejectable
+ */
 public class LeastRecentlyUsed<T, Key> extends CacheStrategy<T, Key> {
 
     public LeastRecentlyUsed(Map<Key, Date> savingTime) {

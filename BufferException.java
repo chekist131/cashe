@@ -1,5 +1,8 @@
 package com.anton;
 
+/**
+ * Abstract buffer exception
+ */
 abstract class BufferException extends Exception {
 
     BufferException(String message) {
