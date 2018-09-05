@@ -17,11 +17,8 @@ public class UnusualKeysAndValuesTest {
             throws BufferIOException, BufferKeyAlreadyExistsException,
             BufferOverflowException, BufferKeyNotFoundException {
         try(Buffer<Value, KeyGen2> buffer = new BufferEmulator<>(100)){
-            Value value1 = new Value("Anton");
-            KeyGen2 key1 = new KeyGen2(5);
-            buffer.save(new KeyGen2(5), value1);
-
-            assertEquals(value1, buffer.restore(key1));
+            buffer.save(new KeyGen2("5"), new Value("Anton"));
+            assertEquals(new Value("Anton"), buffer.restore(new KeyGen2("5")));
         }
     }
 
