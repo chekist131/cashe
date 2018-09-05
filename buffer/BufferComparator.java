@@ -1,4 +1,4 @@
-package com.anton.buffer.object.strategies;
+package com.anton.buffer;
 
 import java.util.Comparator;
 import java.util.Map;

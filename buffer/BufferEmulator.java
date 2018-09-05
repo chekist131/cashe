@@ -1,13 +1,11 @@
-package com.anton.buffer.object;
+package com.anton.buffer;
 
-import com.anton.exceptions.BufferIOException;
-import com.anton.exceptions.BufferKeyAlreadyExistsException;
-import com.anton.exceptions.BufferKeyNotFoundException;
-import com.anton.exceptions.BufferOverflowException;
-import com.anton.buffer.object.strategies.BufferComparator;
+import com.anton.BufferIOException;
+import com.anton.BufferKeyAlreadyExistsException;
+import com.anton.BufferKeyNotFoundException;
+import com.anton.BufferOverflowException;
 
 import java.io.Serializable;
-import java.security.Key;
 import java.util.*;
 import java.util.stream.Collectors;
 

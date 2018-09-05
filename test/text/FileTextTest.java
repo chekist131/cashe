@@ -2,10 +2,10 @@ package com.anton.test.text;
 
 import com.anton.buffer.text.BufferText;
 import com.anton.buffer.text.FileBufferText;
-import com.anton.exceptions.BufferIOException;
-import com.anton.exceptions.BufferKeyAlreadyExistsException;
-import com.anton.exceptions.BufferKeyNotFoundException;
-import com.anton.exceptions.BufferOverflowException;
+import com.anton.BufferIOException;
+import com.anton.BufferKeyAlreadyExistsException;
+import com.anton.BufferKeyNotFoundException;
+import com.anton.BufferOverflowException;
 import org.junit.Test;
 
 public class FileTextTest extends TextTest {

@@ -1,10 +1,10 @@
 package com.anton.test.text;
 
 import com.anton.buffer.text.ArrayBufferText;
-import com.anton.exceptions.BufferIOException;
-import com.anton.exceptions.BufferKeyAlreadyExistsException;
-import com.anton.exceptions.BufferKeyNotFoundException;
-import com.anton.exceptions.BufferOverflowException;
+import com.anton.BufferIOException;
+import com.anton.BufferKeyAlreadyExistsException;
+import com.anton.BufferKeyNotFoundException;
+import com.anton.BufferOverflowException;
 import com.anton.buffer.text.BufferText;
 import org.junit.Test;
 

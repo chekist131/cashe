@@ -1,14 +1,8 @@
 package com.anton;
 
-import com.anton.buffer.object.*;
-import com.anton.buffer.object.strategies.CacheStrategy;
-import com.anton.exceptions.BufferIOException;
-import com.anton.exceptions.BufferKeyAlreadyExistsException;
-import com.anton.exceptions.BufferKeyNotFoundException;
-import com.anton.exceptions.BufferOverflowException;
+import com.anton.buffer.*;
 
 import java.io.Serializable;
-import java.security.Key;
 import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;

@@ -1,6 +1,6 @@
-package com.anton.exceptions;
+package com.anton;
 
-class BufferException extends Exception {
+abstract class BufferException extends Exception {
 
     BufferException(String message) {
         super(message);

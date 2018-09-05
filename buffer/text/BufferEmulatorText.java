@@ -1,6 +1,6 @@
 package com.anton.buffer.text;
 
-import com.anton.buffer.object.BufferEmulator;
+import com.anton.buffer.BufferEmulator;
 
 public class BufferEmulatorText extends BufferEmulator<String, Integer> implements BufferText {
 

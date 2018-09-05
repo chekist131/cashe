@@ -1,8 +1,8 @@
-package com.anton.test.object;
+package com.anton.test;
 
 import com.anton.Cache;
-import com.anton.buffer.object.strategies.LeastRecentlyUsed;
-import com.anton.buffer.object.strategies.MostRecentlyUsed;
+import com.anton.LeastRecentlyUsed;
+import com.anton.MostRecentlyUsed;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

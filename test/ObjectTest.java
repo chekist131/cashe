@@ -1,13 +1,12 @@
-package com.anton.test.object;
+package com.anton.test;
 
-import com.anton.buffer.object.Buffer;
-import com.anton.buffer.object.DoubleBuffer;
-import com.anton.exceptions.BufferIOException;
-import com.anton.exceptions.BufferKeyAlreadyExistsException;
-import com.anton.exceptions.BufferKeyNotFoundException;
-import com.anton.exceptions.BufferOverflowException;
-import com.anton.buffer.object.strategies.BufferComparator;
-import com.anton.test.DefaultBufferComparator;
+import com.anton.buffer.Buffer;
+import com.anton.buffer.DoubleBuffer;
+import com.anton.BufferIOException;
+import com.anton.BufferKeyAlreadyExistsException;
+import com.anton.BufferKeyNotFoundException;
+import com.anton.BufferOverflowException;
+import com.anton.buffer.BufferComparator;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;

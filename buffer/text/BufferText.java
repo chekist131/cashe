@@ -1,6 +1,6 @@
 package com.anton.buffer.text;
 
-import com.anton.buffer.object.Buffer;
+import com.anton.buffer.Buffer;
 
 public interface BufferText extends Buffer<String, Integer>, BufferableText{
 

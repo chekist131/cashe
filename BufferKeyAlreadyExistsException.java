@@ -1,4 +1,4 @@
-package com.anton.exceptions;
+package com.anton;
 
 public class BufferKeyAlreadyExistsException extends BufferException {
     public BufferKeyAlreadyExistsException() {

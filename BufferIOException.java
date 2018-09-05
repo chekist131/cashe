@@ -1,6 +1,4 @@
-package com.anton.exceptions;
-
-import java.io.IOException;
+package com.anton;
 
 public class BufferIOException extends BufferException {
     public BufferIOException(Exception cause) {

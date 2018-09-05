@@ -1,4 +1,4 @@
-package com.anton.exceptions;
+package com.anton;
 
 public class BufferKeyNotFoundException extends BufferException {
 

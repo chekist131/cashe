@@ -1,6 +1,6 @@
 package com.anton.buffer.text;
 
-import com.anton.exceptions.BufferIOException;
+import com.anton.BufferIOException;
 
 import java.io.*;
 

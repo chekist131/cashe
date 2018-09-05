@@ -1,7 +1,5 @@
 package com.anton.buffer;
 
-import com.anton.buffer.object.Buffer;
-
 import java.io.Serializable;
 import java.util.Map;
 import java.util.TreeMap;

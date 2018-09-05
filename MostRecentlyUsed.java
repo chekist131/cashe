@@ -1,4 +1,4 @@
-package com.anton.buffer.object.strategies;
+package com.anton;
 
 import java.util.Date;
 import java.util.Map;

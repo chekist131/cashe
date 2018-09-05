@@ -1,10 +1,10 @@
 package com.anton.buffer.text;
 
-import com.anton.buffer.object.strategies.CacheStrategy;
-import com.anton.exceptions.BufferIOException;
-import com.anton.exceptions.BufferKeyAlreadyExistsException;
-import com.anton.exceptions.BufferKeyNotFoundException;
-import com.anton.exceptions.BufferOverflowException;
+import com.anton.CacheStrategy;
+import com.anton.BufferIOException;
+import com.anton.BufferKeyAlreadyExistsException;
+import com.anton.BufferKeyNotFoundException;
+import com.anton.BufferOverflowException;
 
 import java.util.Date;
 import java.util.Map;

@@ -1,8 +1,7 @@
 package com.anton.test.text;
 
-import com.anton.buffer.object.strategies.MostRecentlyUsed;
 import com.anton.buffer.text.CacheText;
-import com.anton.buffer.object.strategies.LeastRecentlyUsed;
+import com.anton.LeastRecentlyUsed;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

@@ -1,4 +1,4 @@
-package com.anton.test.object.unusual;
+package com.anton.test.unusual;
 
 class KeyGen2 extends KeyGen1{
 

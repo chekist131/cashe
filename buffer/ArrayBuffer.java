@@ -1,4 +1,4 @@
-package com.anton.buffer.object;
+package com.anton.buffer;
 
 import java.io.Serializable;
 

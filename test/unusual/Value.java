@@ -1,4 +1,4 @@
-package com.anton.test.object.unusual;
+package com.anton.test.unusual;
 
 import java.io.Serializable;
 import java.util.Objects;
