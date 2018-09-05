@@ -1,5 +1,6 @@
-package com.anton.buffer.object;
+package com.anton;
 
+import com.anton.buffer.object.*;
 import com.anton.buffer.object.strategies.CacheStrategy;
 import com.anton.exceptions.BufferIOException;
 import com.anton.exceptions.BufferKeyAlreadyExistsException;

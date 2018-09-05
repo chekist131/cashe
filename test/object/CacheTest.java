@@ -1,6 +1,6 @@
 package com.anton.test.object;
 
-import com.anton.buffer.object.Cache;
+import com.anton.Cache;
 import com.anton.buffer.object.strategies.LeastRecentlyUsed;
 import com.anton.buffer.object.strategies.MostRecentlyUsed;
 import org.junit.Test;
