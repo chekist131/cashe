@@ -4,7 +4,8 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.TreeMap;
 
-public abstract class IContinuousBuffer<T extends Serializable, Key extends Comparable<? super Key>> implements Buffer<T, Key> {
+public abstract class IContinuousBuffer<T extends Serializable, Key extends Comparable<? super Key>>
+        implements Buffer<T, Key> {
     protected Map<Key, Place> keysToStartAndLength;
     protected int lastIndex;
 

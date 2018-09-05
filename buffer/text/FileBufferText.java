@@ -4,7 +4,7 @@ import com.anton.BufferIOException;
 
 import java.io.*;
 
-public class FileBufferText extends ContinuousBufferText {
+public class FileBufferText<Key extends Comparable<? super Key>> extends ContinuousBufferText<Key> {
 
     private String fileName;
     private int size;

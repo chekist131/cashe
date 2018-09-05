@@ -1,6 +1,6 @@
 package com.anton.buffer.text;
 
-public class ArrayBufferText extends ContinuousBufferText {
+public class ArrayBufferText<Key extends Comparable<? super Key>> extends ContinuousBufferText<Key> {
 
     private char[] data;
 

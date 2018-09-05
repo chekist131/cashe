@@ -23,14 +23,14 @@ abstract class TextTest {
             BufferIOException, BufferKeyNotFoundException;
 
     void saveAndRestore(
-            BufferText externalBuffer,
-            BufferText internalBuffer)
+            BufferText<Integer> externalBuffer,
+            BufferText<Integer> internalBuffer)
             throws
             BufferOverflowException,
             BufferKeyAlreadyExistsException,
             BufferIOException,
             BufferKeyNotFoundException {
-        DoubleBufferText doubleBuffer = new DoubleBufferText(externalBuffer, internalBuffer, comparator);
+        DoubleBufferText<Integer> doubleBuffer = new DoubleBufferText<>(externalBuffer, internalBuffer, comparator);
 
         doubleBuffer.save(1, "Igor");
         assertEquals(4, doubleBuffer.getExternalBufferUsed());

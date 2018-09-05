@@ -10,13 +10,14 @@ import com.anton.buffer.BufferComparator;
 
 import java.util.*;
 
-public abstract class ContinuousBufferText extends IContinuousBuffer<String, Integer> implements BufferText {
+public abstract class ContinuousBufferText<Key extends Comparable<? super Key>>
+        extends IContinuousBuffer<String, Key> implements BufferText<Key> {
     @Override
-    public Set<Map.Entry<Integer, String>> getExtraValues(Integer key, String value, BufferComparator<String,Integer> comparator)
+    public Set<Map.Entry<Key, String>> getExtraValues(Key key, String value, BufferComparator<String, Key> comparator)
             throws BufferIOException {
         char[] data = fetch();
-        SortedSet<Map.Entry<Integer, String>> allData = new TreeSet<>(comparator.reversed());
-        for(Map.Entry<Integer, Place> keyToStartAndLength: keysToStartAndLength.entrySet()){
+        SortedSet<Map.Entry<Key, String>> allData = new TreeSet<>(comparator.reversed());
+        for(Map.Entry<Key, Place> keyToStartAndLength: keysToStartAndLength.entrySet()){
             allData.add(
                     new AbstractMap.SimpleImmutableEntry<>(keyToStartAndLength.getKey(),
                     new String(
@@ -25,10 +26,10 @@ public abstract class ContinuousBufferText extends IContinuousBuffer<String, Int
                             keyToStartAndLength.getValue().getLength())));
         }
         allData.add(new AbstractMap.SimpleImmutableEntry<>(key, value));
-        Set<Map.Entry<Integer, String>> extra = new TreeSet<>(Comparator.comparing(Map.Entry::getKey));
+        Set<Map.Entry<Key, String>> extra = new TreeSet<>(Comparator.comparing(Map.Entry::getKey));
         final int necessaryBytes = value.length() - getFree();
         int byteCounter = 0;
-        for(Map.Entry<Integer, String> e: allData){
+        for(Map.Entry<Key, String> e: allData){
             extra.add(e);
             byteCounter += e.getValue().length();
             if (byteCounter >= necessaryBytes)
@@ -38,11 +39,11 @@ public abstract class ContinuousBufferText extends IContinuousBuffer<String, Int
     }
 
     @Override
-    public Set<Map.Entry<Integer, String>> getValuableValues(int freeBytes, BufferComparator<String, Integer> comparator)
+    public Set<Map.Entry<Key, String>> getValuableValues(int freeBytes, BufferComparator<String, Key> comparator)
             throws BufferIOException {
         char[] data = fetch();
-        SortedSet<Map.Entry<Integer, String>> allData = new TreeSet<>(comparator);
-        for(Map.Entry<Integer, Place> keyToStartAndLength: keysToStartAndLength.entrySet()){
+        SortedSet<Map.Entry<Key, String>> allData = new TreeSet<>(comparator);
+        for(Map.Entry<Key, Place> keyToStartAndLength: keysToStartAndLength.entrySet()){
             allData.add(
                     new AbstractMap.SimpleImmutableEntry<>(keyToStartAndLength.getKey(),
                     new String(
@@ -50,9 +51,9 @@ public abstract class ContinuousBufferText extends IContinuousBuffer<String, Int
                             keyToStartAndLength.getValue().getStart(),
                             keyToStartAndLength.getValue().getLength())));
         }
-        Set<Map.Entry<Integer, String>> extra = new TreeSet<>(Comparator.comparing(Map.Entry::getKey));
+        Set<Map.Entry<Key, String>> extra = new TreeSet<>(Comparator.comparing(Map.Entry::getKey));
         int byteCounter = 0;
-        for(Map.Entry<Integer, String> e: allData){
+        for(Map.Entry<Key, String> e: allData){
             byteCounter += e.getValue().length();
             if (byteCounter > freeBytes)
                 break;
@@ -62,7 +63,7 @@ public abstract class ContinuousBufferText extends IContinuousBuffer<String, Int
     }
 
     @Override
-    public void save(Integer key, String o)
+    public void save(Key key, String o)
             throws BufferOverflowException, BufferKeyAlreadyExistsException, BufferIOException {
         if (keysToStartAndLength.containsKey(key))
             throw new BufferKeyAlreadyExistsException();
@@ -78,7 +79,7 @@ public abstract class ContinuousBufferText extends IContinuousBuffer<String, Int
     }
 
     @Override
-    public String restore(Integer key) throws BufferKeyNotFoundException, BufferIOException {
+    public String restore(Key key) throws BufferKeyNotFoundException, BufferIOException {
         if (!keysToStartAndLength.containsKey(key))
             throw new BufferKeyNotFoundException(key);
         Place startAndLengthValue = keysToStartAndLength.get(key);
@@ -92,7 +93,7 @@ public abstract class ContinuousBufferText extends IContinuousBuffer<String, Int
         for (int i = lastIndex - startAndLengthValue.getLength(); i < lastIndex; i++)
             data[i] = (char) -1;
         stash(data);
-        for(Map.Entry<Integer, Place> keyToStartAndLengthTemp: keysToStartAndLength.entrySet()){
+        for(Map.Entry<Key, Place> keyToStartAndLengthTemp: keysToStartAndLength.entrySet()){
             if (keyToStartAndLengthTemp.getValue().getStart() > startAndLengthValue.getStart())
                 keyToStartAndLengthTemp.setValue(new Place(
                         keyToStartAndLengthTemp.getValue().getStart() - startAndLengthValue.getLength(),

@@ -12,8 +12,8 @@ public class EmulatorTextTest extends TextTest {
     @Test
     public void saveAndRestore() throws BufferKeyAlreadyExistsException, BufferIOException, BufferKeyNotFoundException, BufferOverflowException {
         try(
-                BufferText extBuf = new BufferEmulatorText(externalBufferSize);
-                BufferText intBuf = new BufferEmulatorText(internalBufferSize)
+                BufferText<Integer> extBuf = new BufferEmulatorText<>(externalBufferSize);
+                BufferText<Integer> intBuf = new BufferEmulatorText<>(internalBufferSize)
         ){
             super.saveAndRestore(extBuf, intBuf);
         }

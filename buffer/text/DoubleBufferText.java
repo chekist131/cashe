@@ -3,11 +3,12 @@ package com.anton.buffer.text;
 import com.anton.buffer.DoubleBuffer;
 import com.anton.buffer.BufferComparator;
 
-public class DoubleBufferText extends DoubleBuffer<String, Integer> implements BufferableText {
+public class DoubleBufferText<Key extends Comparable<? super Key>>
+        extends DoubleBuffer<String, Key> implements BufferableText<Key> {
     public DoubleBufferText(
-            BufferText externalBuffer,
-            BufferText internalBuffer,
-            BufferComparator<String, Integer> comparator) {
+            BufferText<Key> externalBuffer,
+            BufferText<Key> internalBuffer,
+            BufferComparator<String, Key> comparator) {
         super(externalBuffer, internalBuffer, comparator);
     }
 }

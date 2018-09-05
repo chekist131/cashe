@@ -10,7 +10,7 @@ public class CacheTextTest {
 
     @Test
     public void saveAndRestore() throws Exception {
-        try(CacheText cache = new CacheText(5, 10, LeastRecentlyUsed::new)){
+        try(CacheText<Integer> cache = new CacheText<>(5, 10, LeastRecentlyUsed::new)){
             cache.save(5, "Anton");
             assertEquals(5, cache.getExternalBufferUsed());
             assertEquals(0, cache.getInternalBufferUsed());

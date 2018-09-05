@@ -2,7 +2,7 @@ package com.anton.buffer.text;
 
 import com.anton.buffer.Buffer;
 
-public interface BufferText extends Buffer<String, Integer>, BufferableText{
+public interface BufferText<Key extends Comparable<? super Key>> extends Buffer<String, Key>, BufferableText<Key>{
 
     default int getCountOfElements(String o) {
         return o.getBytes().length;

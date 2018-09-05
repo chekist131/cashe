@@ -14,8 +14,8 @@ public class FileTextTest extends TextTest {
             throws BufferOverflowException, BufferKeyAlreadyExistsException,
             BufferIOException, BufferKeyNotFoundException {
         try(
-                BufferText extBuf = new FileBufferText(externalBufferSize, "test1");
-                BufferText intBuf = new FileBufferText(internalBufferSize, "test2")
+                BufferText<Integer> extBuf = new FileBufferText<>(externalBufferSize, "test1");
+                BufferText<Integer> intBuf = new FileBufferText<>(internalBufferSize, "test2")
         ){
             super.saveAndRestore(extBuf, intBuf);
         }

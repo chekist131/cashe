@@ -11,20 +11,20 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Function;
 
-public class CacheText implements BufferableText {
-    private DoubleBufferText doubleBufferText;
-    private BufferText externalBufferForDoubleBuffer;
-    private BufferText internalBufferForDoubleBuffer;
-    private Map<Integer, Date> savingTime;
+public class CacheText<Key extends Comparable<? super Key>> implements BufferableText<Key> {
+    private DoubleBufferText<Key> doubleBufferText;
+    private BufferText<Key> externalBufferForDoubleBuffer;
+    private BufferText<Key> internalBufferForDoubleBuffer;
+    private Map<Key, Date> savingTime;
 
     public CacheText(
             int externalSize,
             int internalSize,
-            Function<Map<Integer, Date>, CacheStrategy<String, Integer>> cacheStrategyConstructor) throws BufferIOException {
+            Function<Map<Key, Date>, CacheStrategy<String, Key>> cacheStrategyConstructor) throws BufferIOException {
         this.savingTime = new TreeMap<>();
-        this.externalBufferForDoubleBuffer = new ArrayBufferText(externalSize);
-        this.internalBufferForDoubleBuffer = new FileBufferText(internalSize, "l2buffer");
-        this.doubleBufferText = new DoubleBufferText(
+        this.externalBufferForDoubleBuffer = new ArrayBufferText<>(externalSize);
+        this.internalBufferForDoubleBuffer = new FileBufferText<>(internalSize, "l2buffer");
+        this.doubleBufferText = new DoubleBufferText<>(
                 this.externalBufferForDoubleBuffer,
                 this.internalBufferForDoubleBuffer,
                 cacheStrategyConstructor.apply(this.savingTime));
@@ -45,11 +45,12 @@ public class CacheText implements BufferableText {
     }
 
     @Override
-    public boolean isContainsKey(Integer key) {
+    public boolean isContainsKey(Key key) {
         return doubleBufferText.isContainsKey(key);
     }
 
-    public void save(Integer key, String value) throws BufferKeyAlreadyExistsException, BufferOverflowException, BufferIOException {
+    public void save(Key key, String value)
+            throws BufferKeyAlreadyExistsException, BufferOverflowException, BufferIOException {
         savingTime.put(key, new Date());
         try{
             doubleBufferText.save(key, value);
@@ -59,7 +60,7 @@ public class CacheText implements BufferableText {
         }
     }
 
-    public String restore(Integer key) throws BufferKeyNotFoundException, BufferIOException {
+    public String restore(Key key) throws BufferKeyNotFoundException, BufferIOException {
         Date time = savingTime.get(key);
         savingTime.remove(key);
         try{
