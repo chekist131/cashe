@@ -1,23 +1,21 @@
-package com.anton.test;
+package com.anton.text;
 
-import com.anton.buffer.Buffer;
-import com.anton.buffer.BufferEmulator;
+import com.anton.buffer.text.BufferText;
+import com.anton.buffer.text.FileBufferText;
 import com.anton.BufferIOException;
 import com.anton.BufferKeyAlreadyExistsException;
 import com.anton.BufferKeyNotFoundException;
 import com.anton.BufferOverflowException;
 import org.junit.Test;
 
-public class EmulatorTest extends ObjectTest {
-
-    @Override
+public class FileTextTest extends TextTest {
     @Test
     public void saveAndRestore()
             throws BufferOverflowException, BufferKeyAlreadyExistsException,
             BufferIOException, BufferKeyNotFoundException {
         try(
-                Buffer<String, Integer> extBuf = new BufferEmulator<>(externalBufferSize);
-                Buffer<String, Integer> intBuf = new BufferEmulator<>(internalBufferSize)
+                BufferText<Integer> extBuf = new FileBufferText<>(externalBufferSize, "test1");
+                BufferText<Integer> intBuf = new FileBufferText<>(internalBufferSize, "test2")
         ){
             super.saveAndRestore(extBuf, intBuf);
         }

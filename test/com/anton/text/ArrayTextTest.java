@@ -1,4 +1,4 @@
-package com.anton.test.text;
+package com.anton.text;
 
 import com.anton.buffer.text.ArrayBufferText;
 import com.anton.BufferIOException;

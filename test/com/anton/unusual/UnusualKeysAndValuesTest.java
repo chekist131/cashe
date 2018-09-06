@@ -1,4 +1,4 @@
-package com.anton.test.unusual;
+package com.anton.unusual;
 
 import com.anton.buffer.Buffer;
 import com.anton.buffer.BufferEmulator;

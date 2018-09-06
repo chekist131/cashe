@@ -1,11 +1,7 @@
-package com.anton.test;
+package com.anton;
 
 import com.anton.buffer.Buffer;
 import com.anton.buffer.DoubleBuffer;
-import com.anton.BufferIOException;
-import com.anton.BufferKeyAlreadyExistsException;
-import com.anton.BufferKeyNotFoundException;
-import com.anton.BufferOverflowException;
 import com.anton.buffer.BufferComparator;
 
 import static org.junit.Assert.assertEquals;

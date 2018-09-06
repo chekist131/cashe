@@ -1,11 +1,7 @@
-package com.anton.test;
+package com.anton;
 
 import com.anton.buffer.Buffer;
 import com.anton.buffer.FileBuffer;
-import com.anton.BufferIOException;
-import com.anton.BufferKeyAlreadyExistsException;
-import com.anton.BufferKeyNotFoundException;
-import com.anton.BufferOverflowException;
 import org.junit.Test;
 
 public class FileTest extends ObjectTest {

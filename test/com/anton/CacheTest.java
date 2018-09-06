@@ -1,4 +1,4 @@
-package com.anton.test;
+package com.anton;
 
 import com.anton.Cache;
 import com.anton.LeastRecentlyUsed;

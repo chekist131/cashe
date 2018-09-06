@@ -1,4 +1,4 @@
-package com.anton.test.unusual;
+package com.anton.unusual;
 
 import java.util.Objects;
 
