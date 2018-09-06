@@ -1,11 +1,11 @@
-package com.anton.text;
+package com.anton.text.test;
 
 import com.anton.BufferIOException;
 import com.anton.BufferKeyAlreadyExistsException;
 import com.anton.BufferKeyNotFoundException;
 import com.anton.BufferOverflowException;
-import com.anton.buffer.text.BufferText;
-import com.anton.buffer.text.BufferEmulatorText;
+import com.anton.text.BufferText;
+import com.anton.text.BufferEmulatorText;
 import org.junit.Test;
 
 public class EmulatorTextTest extends TextTest {

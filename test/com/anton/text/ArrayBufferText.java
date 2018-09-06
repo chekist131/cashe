@@ -1,4 +1,4 @@
-package com.anton.buffer.text;
+package com.anton.text;
 
 public class ArrayBufferText<Key extends Comparable<? super Key>> extends ContinuousBufferText<Key> {
 

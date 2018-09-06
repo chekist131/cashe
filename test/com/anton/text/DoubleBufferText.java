@@ -1,4 +1,4 @@
-package com.anton.buffer.text;
+package com.anton.text;
 
 import com.anton.buffer.DoubleBuffer;
 import com.anton.buffer.BufferComparator;

@@ -1,11 +1,11 @@
-package com.anton.text;
+package com.anton.text.test;
 
-import com.anton.buffer.text.ArrayBufferText;
+import com.anton.text.ArrayBufferText;
 import com.anton.BufferIOException;
 import com.anton.BufferKeyAlreadyExistsException;
 import com.anton.BufferKeyNotFoundException;
 import com.anton.BufferOverflowException;
-import com.anton.buffer.text.BufferText;
+import com.anton.text.BufferText;
 import org.junit.Test;
 
 public class ArrayTextTest extends TextTest {

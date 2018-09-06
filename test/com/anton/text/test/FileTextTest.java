@@ -1,7 +1,7 @@
-package com.anton.text;
+package com.anton.text.test;
 
-import com.anton.buffer.text.BufferText;
-import com.anton.buffer.text.FileBufferText;
+import com.anton.text.BufferText;
+import com.anton.text.FileBufferText;
 import com.anton.BufferIOException;
 import com.anton.BufferKeyAlreadyExistsException;
 import com.anton.BufferKeyNotFoundException;

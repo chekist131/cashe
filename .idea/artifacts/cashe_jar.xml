@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="cashe:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/cashe_jar</output-path>
+    <root id="archive" name="cashe.jar">
+      <element id="module-output" name="cashe" />
+    </root>
+  </artifact>
+</component>

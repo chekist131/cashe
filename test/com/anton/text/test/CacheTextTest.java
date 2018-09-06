@@ -1,6 +1,6 @@
-package com.anton.text;
+package com.anton.text.test;
 
-import com.anton.buffer.text.CacheText;
+import com.anton.text.CacheText;
 import com.anton.LeastRecentlyUsed;
 import org.junit.Test;
 
