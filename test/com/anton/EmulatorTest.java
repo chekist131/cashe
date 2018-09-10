@@ -1,7 +1,6 @@
 package com.anton;
 
 import com.anton.buffer.Buffer;
-import com.anton.buffer.BufferEmulator;
 import org.junit.Test;
 
 public class EmulatorTest extends ObjectTest {

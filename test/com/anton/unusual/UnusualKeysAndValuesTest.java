@@ -1,7 +1,7 @@
 package com.anton.unusual;
 
 import com.anton.buffer.Buffer;
-import com.anton.buffer.BufferEmulator;
+import com.anton.BufferEmulator;
 import com.anton.BufferIOException;
 import com.anton.BufferKeyAlreadyExistsException;
 import com.anton.BufferKeyNotFoundException;
