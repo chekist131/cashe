@@ -57,7 +57,7 @@ public class Cache<T extends Serializable, Key extends Comparable<? super Key>> 
     }
 
     @Override
-    public void close(){
+    public void close() throws BufferIOException{
         externalBufferForDoubleBuffer.close();
         internalBufferForDoubleBuffer.close();
     }

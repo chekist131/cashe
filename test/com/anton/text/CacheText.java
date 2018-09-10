@@ -39,7 +39,7 @@ public class CacheText<Key extends Comparable<? super Key>> implements Bufferabl
     }
 
     @Override
-    public void close(){
+    public void close() throws BufferIOException{
         externalBufferForDoubleBuffer.close();
         internalBufferForDoubleBuffer.close();
     }

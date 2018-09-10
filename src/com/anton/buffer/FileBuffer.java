@@ -6,16 +6,24 @@ import java.io.*;
 
 public class FileBuffer<T extends Serializable, Key extends Comparable<? super Key>> extends ContinuousBuffer<T, Key> {
 
-    private String fileName;
+    private RandomAccessFile randomAccessFile;
+    private File file;
+
     private int size;
 
     public FileBuffer(int bufferSize, String fileName) throws BufferIOException {
         this.size = bufferSize;
-        this.fileName = fileName;
-        File f = new File(this.fileName);
+        file = new File(fileName);
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                throw new BufferIOException(e);
+            }
+        }
         try {
-            f.createNewFile();
-        } catch (IOException e) {
+            randomAccessFile = new RandomAccessFile(file, "rw");
+        } catch (FileNotFoundException e) {
             throw new BufferIOException(e);
         }
     }
@@ -23,8 +31,9 @@ public class FileBuffer<T extends Serializable, Key extends Comparable<? super K
     @Override
     byte[] fetch() throws BufferIOException {
         byte[] data = new byte[size];
-        try(InputStream inputStream = new FileInputStream(fileName)){
-            inputStream.read(data);
+        try{
+            randomAccessFile.seek(0);
+            randomAccessFile.read(data);
         } catch (IOException e) {
             throw new BufferIOException(e);
         }
@@ -33,8 +42,9 @@ public class FileBuffer<T extends Serializable, Key extends Comparable<? super K
 
     @Override
     void stash(byte[] data) throws BufferIOException {
-        try(OutputStream fileOutputStream = new FileOutputStream(fileName)){
-            fileOutputStream.write(data);
+        try{
+            randomAccessFile.seek(0);
+            randomAccessFile.write(data);
         } catch (IOException e) {
             throw new BufferIOException(e);
         }
@@ -46,8 +56,12 @@ public class FileBuffer<T extends Serializable, Key extends Comparable<? super K
     }
 
     @Override
-    public void close() {
-        File f = new File(fileName);
-        f.delete();
+    public void close() throws BufferIOException{
+        try {
+            randomAccessFile.close();
+        } catch (IOException e) {
+            throw new BufferIOException(e);
+        }
+        file.delete();
     }
 }

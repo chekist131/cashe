@@ -59,7 +59,7 @@ public interface Buffer<T extends Serializable, Key extends Comparable<? super K
     Set<Map.Entry<Key, T>> getValuableValues(int freeBytes, BufferComparator<T, Key> comparator) throws BufferIOException;
 
     @Override
-    void close();
+    void close() throws BufferIOException;
 
     default int getCountOfElements(T o) throws BufferIOException {
         int length;
